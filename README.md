@@ -34,9 +34,13 @@
 
 &nbsp;
 
+&nbsp;
 
+&nbsp;
 
+**License**
 
+MIT &copy; Devan Scholefield
 
 
 
