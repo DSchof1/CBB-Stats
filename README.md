@@ -16,7 +16,7 @@ Matchup tool for NCAA Division 1 Men's Basketball teams.  This app predicts the 
 
 &nbsp;
 
-<div style="text-align:justify;"> Check out [Bart Torvik](https://barttorvik.com/#) and [KenPom](https://kenpom.com/) if you want some more nitty-gritty college basketball stats.  There's also a great paper about the [Derivation of Pythagorean Won-Loss Formula](https://web.williams.edu/Mathematics/sjmiller/public_html/399/handouts/PythagWonLoss_Paper.pdf) that effectively forms the basis for all college basketball analytics.</div>
+<div style="text-align:justify;"> Check out [Bart Torvik](https://barttorvik.com/) and [KenPom](https://kenpom.com/) if you want some more nitty-gritty college basketball stats.  There's also a great paper about the [Derivation of Pythagorean Won-Loss Formula](https://web.williams.edu/Mathematics/sjmiller/public_html/399/handouts/PythagWonLoss_Paper.pdf) that effectively forms the basis for all college basketball analytics.</div>
 
 &nbsp;
 
