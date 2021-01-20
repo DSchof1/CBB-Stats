@@ -2,7 +2,7 @@
 
 &nbsp;
 
-<div style="text-align:justify;"> Matchup tool for NCAA Division 1 Men's Basketball teams.  This app predicts the score outcome of games and gives the probability a team will win.  The app itself, <a href = "https://dschof1.shinyapps.io/cbb_stats/">College Basketball Matchup Predictor</a>, is hosted on https://shinyapps.io. </div>
+<div style="text-align:justify;"> Matchup tool for NCAA Division 1 Men's Basketball teams.  This app predicts the score outcome of games and gives the probability a team will win.  The app itself, <a href = "https://dschof1.shinyapps.io/cbb_stats/">College Basketball Matchup Predictor</a>, is hosted on Shinyapps. </div>
 
 &nbsp;
 
