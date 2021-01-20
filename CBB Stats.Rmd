@@ -211,6 +211,15 @@ All data used in this app I either collected myself (logos) or was scraped from 
 
 &nbsp;
 
+<h4>Why do the scores have decimals?</h4>
+
+
+<div style="text-align:justify;"> Scores have decimals to be precise.  Two teams very close in skill level may result in a final score that is only separated by less than a point.  But no game can end in a tie, so it's important to know how much more favoured a certain team is.  Furthermore in the sports betting world the margin of games is very important, therefore we want to also know what the exact expected margin of victory is, and not a rounded approximation.  </div>
+
+&nbsp;
+
+&nbsp;
+
 <h4>What does the NCAA logo represent?</h4>
 
 The logo is used to represent how a team would fare against the average NCAA Division 1 team.  
@@ -239,7 +248,9 @@ For college basketball the variables $p_A$ and $p_B$ represent:
 
 &nbsp;
 
-**How are these probabilities calculated?**
+&nbsp;
+
+<h4>How are these probabilities calculated?</h4>
 
 <div style="text-align:justify;"> In order to calculate these probabilities we need two things, Adjusted Offensive Efficiency and Adjusted Defensive Efficiency.  Each of these is calculated on a per-game basis and averaged to get the overall values.  The per-game numbers for one team are calculated as follows: </div>
 
@@ -263,7 +274,7 @@ Where:
 
 &nbsp;
 
-<div style="text-align:justify;"> Then for each team you average their gamescores for Adjusted Offensive and Defensive Efficiency and get their overall adjusted efficiencies.  These adjusted efficiencies are now plugged into Bill James' [Pythagorean Expectation](https://web.williams.edu/Mathematics/sjmiller/public_html/399/handouts/PythagWonLoss_Paper.pdf) formula to calculate what a team's chance of winning would be against the average Division 1 team.  For college basketball the formula is simplified to: </div>
+<div style="text-align:justify;"> Then for each team you average their game scores for Adjusted Offensive and Defensive Efficiency and get their overall adjusted efficiencies.  These adjusted efficiencies are now plugged into Bill James' [Pythagorean Expectation](https://web.williams.edu/Mathematics/sjmiller/public_html/399/handouts/PythagWonLoss_Paper.pdf) formula to calculate what a team's chance of winning would be against the average Division 1 team.  For college basketball the formula is simplified to: </div>
 
 &nbsp;
 
@@ -284,7 +295,9 @@ Now that we have the probability that a team will defeat the average NCAA Divisi
 
 &nbsp;
 
-**How are the game scores calculated?**
+&nbsp;
+
+<h4>How are the game scores calculated?</h4>
 
 <div style="text-align:justify;"> Game scores rely on Adjusted Offensive and Defensive Efficiencies as well as Adjusted Tempo.  Tempo is a metric that indicates how fast a team plays.  Simply put, adjusted Tempo is a measurement of how many possessions a team would have against the average Division 1 team.  I won't get into the specifics of how possessions and tempo are calculated, but more info about [possessions](https://cbbstatshelp.com/efficiency/possessions/) and [tempo](https://cbbstatshelp.com/efficiency/tempo-and-pace/) can be found at [College Basketball Stats Help](https://cbbstatshelp.com/).  In order to calculate game score we must first find the expected tempo team A and team B will have compared to the Division 1 average when they play each other.  This is calculated by the following: </div>
 
@@ -296,12 +309,12 @@ Now that we have the probability that a team will defeat the average NCAA Divisi
 
 Where:
 
-* $E(Tempo_{A,B} =$ The expected number of possessions that team and A and B will each have
+* $E(Tempo_{A,B}) =$ The expected number of possessions that team and A and B will each have
 * $AdjT_A =$ The adjusted number of possessions team A has in a game
 * $AdjT_B =$ The adjusted number of possessions team B has in a game
 * $AdjT_{NCAA} =$ The adjusted number of possessions the average NCAA Division 1 team has in a game
 
-*Note: It is interesting that this formula effectively states that when two teams who have higher than average possessions per game play eachother their expected possessions per game are higher than either of their individual possessions per game.*
+*Note: It is interesting that this formula effectively states that when two teams who have higher than average possessions per game play each other their expected possessions per game are higher than either of their individual possessions per game.*
 
 &nbsp;
 
@@ -326,19 +339,25 @@ Where:
 
 &nbsp;
 
-**What about home-court advantage?**
+&nbsp;
+
+<h4>What about home-court advantage?</h4>
 
 <div style="text-align:justify;"> Home-court advantage surely does exist and KenPom has a great [article](https://kenpom.com/blog/mining-point-spread-data-home-court-advantage/) on it if you want to read more about the numbers behind it.  For many years both Bart Torvik and KenPom used a multiplier of $1.4\%$ for this advantage.  This multiplier was applied to both the home and away teams' Adjusted Offensive and Defensive Efficiencies.  The home team would receive a benefit of $1.4\%$ so their Adjusted Offensive Efficiency would be multiplied by $1.4%$ and their Adjusted Defensive Efficiency would be multiplied by $98.6\%$ $(100\% - 1.4\%)$ (since a lower Adjusted Defensive Efficiency is better).  The reverse is true for the visiting team, their Adjusted Offensive Efficiency would be multiplied by $98.6\%$ $(100\% - 1.4\%)$ and their Adjusted Defensive Efficiency would be multiplied by $1.4\%$. </div>
 
 &nbsp;
 
-**How does this multiplier affect the probability a team wins a game and that game's score?**
+&nbsp;
 
-<div style="text-align:justify;"> Well if we go back to the Log5 formula we saw that the expected winning percentage of a team was based on the Adjusted Offensive and Defensive Efficiencies of that team.  Hence we are altering the team's odds of beating the average Division 1 team depending on whether they are home or away.  We also saw that the calculation for the expected number points a team will score relies on the interaction between that team's offense and the opposing team's defense.  As such the multiplier will give a slight buff to the home team's number of points and will give a slight nerf to the away team's number of points. </div>
+<h4>How does this multiplier affect the probability a team wins a game and that game's score?</h4>
+
+<div style="text-align:justify;"> If we go back to the Log5 formula we saw that the expected winning percentage of a team was based on the Adjusted Offensive and Defensive Efficiencies of that team.  Hence we are altering the team's odds of beating the average Division 1 team depending on whether they are home or away.  We also saw that the calculation for the expected number of points a team will score relies on the interaction between that team's offense and the opposing team's defense.  As such the multiplier will give a slight buff to the home team's number of points and will give a slight nerf to the away team's number of points. </div>
 
 &nbsp;
 
-**Is your multiplier 1.4%?**
+&nbsp;
+
+<h4>Is your multiplier 1.4%?</h4>
 
 <div style="text-align:justify;"> In short no.  This season teams either have no fans in attendance or a very limited number.  Fans surely have an impact on the multiplier for home-court advantage.  Therefore without them the multiplier has to be lower.  This is why I have set my multiplier to 1%.  While I determined this empirically I believe it to be a "good enough" approximation for this year when there are such differences due to COVID. </div>
 
@@ -352,3 +371,4 @@ Where:
 
 &nbsp;
 
+&nbsp;
