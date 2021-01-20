@@ -199,9 +199,13 @@ shinyApp(
 
 &nbsp;
 
+The code behind this app as well as an excel file with links to all team logos can be found at my [GitHub](https://github.com/DSchof1/CBB-Stats). 
+
+&nbsp;
+
 <h4>Where does the data come from?</h4>
 
-All data used in this app I either collected myself (logos) or was scraped from [Bart Torvik](https://barttorvik.com/#).
+All data used in this app I either collected myself (logos) or was scraped from [Bart Torvik](https://barttorvik.com/#).   
 
 &nbsp;
 
