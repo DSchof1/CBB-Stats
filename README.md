@@ -24,7 +24,9 @@
 
 &nbsp;
 
-<div style="text-align:center;"> And as always GO BIG BLUE </div>
+<p align="center">
+  And as always GO BIG BLUE
+</p>
 
 &nbsp;
 
