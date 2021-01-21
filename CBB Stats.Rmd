@@ -269,8 +269,8 @@ Where:
 * $PPP_O =$ Points Scored Per Possession on Offense
 * $PPP_D =$ Points Allowed Per Possession on Defense
 * $PPP_A =$ NCAA Average Points Per Possession
-* $OAdjDE =$ Opponents Adjusted Defensive Efficiency
 * $OAdjOE =$ Opponents Adjusted Offensive Efficiency
+* $OAdjDE =$ Opponents Adjusted Defensive Efficiency
 
 &nbsp;
 
