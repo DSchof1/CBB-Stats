@@ -18,7 +18,7 @@
 
 &nbsp;
 
-<div style="text-align:justify;"> Check out <a href = "https://barttorvik.com/">Bart Torvik</a> and <a href = "https://kenpom.com/">KenPom</a> if you want some more nitty-gritty college basketball stats.  There's also a great paper about the <a href = https://web.williams.edu/Mathematics/sjmiller/public_html/399/handouts/PythagWonLoss_Paper.pdf">Derivation of Pythagorean Won-Loss Formula</a> that effectively forms the basis for all college basketball analytics.</div>
+<div style="text-align:justify;"> Check out <a href = "https://barttorvik.com/">Bart Torvik</a> and <a href = "https://kenpom.com/">KenPom</a> if you want some more nitty-gritty college basketball stats.  There's also a great paper about the <a href ="https://web.williams.edu/Mathematics/sjmiller/public_html/math/papers/PythagWonLoss_Paper.pdf"> Derivation of Pythagorean Won-Loss Formula</a> that effectively forms the basis for all college basketball analytics.</div>
 
 &nbsp;
 
