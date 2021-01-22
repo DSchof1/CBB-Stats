@@ -1,7 +1,6 @@
 ---
 title: "NCAA Basketball Matchup Predictor"
 #author: "Devan Scholefield"
-#date: "03/12/2020"
 output: html_document
 runtime: shiny
 ---
