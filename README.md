@@ -31,7 +31,7 @@
 &nbsp;
 
 ![](<https://www.si.com/.image/t_share/MTY4MDE0MDI2NzkyOTA0MDY0/kentucky-national-championship-winsjpg.jpg>)
-*Anthony Davis, Eloy Vargas, and Coach Cal celebrate Kentucky's 8th National Championship in 2012 after defeating the Kansas Jayhawks.  *
+<em>Anthony Davis, Eloy Vargas, and Coach Cal celebrate Kentucky's 8th National Championship in 2012 after defeating the Kansas Jayhawks. </em>
 
 &nbsp;
 
