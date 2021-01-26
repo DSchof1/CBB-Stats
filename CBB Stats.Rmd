@@ -290,7 +290,7 @@ Where:
 
 &nbsp;
 
-Now that we have the probability that a team will defeat the average NCAA Division 1 team we can simply use the Log5 formula above to find the probability that team A will defeat B.  
+Now that we have the probability that a team will defeat the average NCAA Division 1 team we can simply use the Log5 formula above to find the probability that team A will defeat team B.  
 
 &nbsp;
 
