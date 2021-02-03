@@ -36,7 +36,6 @@ def PullOddsFunc (OddsType, Bookies):
     
     return cl.dataframe(e)[cols]
 
-
 #%%
 #Testing with just bet365 right now to simplify things in shiny
 bet365books = ["bet365"]
@@ -49,8 +48,23 @@ bet365books = ["bet365"]
 
 #OUtodaysgames = PullOddsFunc("ou", books)
 
+#%%
+#Used this to get a close approximation of the proper logos for each team
+
+# TeamKeys = pysbr.NCAAB()._team_ids
+# import pandas
+# import openpyxl
 
 
+# Names = list(TeamKeys['name'].keys())
+# Abbreviations = list(TeamKeys['sbr abbreviation'].keys())
+
+# Abbreviations = [x.upper() for x in Abbreviations]
 
 
+# df = pandas.DataFrame(Names,columns=['TEAM'])
+# df['Abbreviations'] = Abbreviations
+
+
+# df.to_excel (r'NameAbbrevs.xlsx', index = False, header=True)
 
