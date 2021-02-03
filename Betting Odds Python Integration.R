@@ -27,9 +27,9 @@ reticulate::virtualenv_install("python3_env",
 
 reticulate::source_python("BettingOdds.py")
 
-TodaysGamesML <- PullOddsFunc("moneyline", bet365books)
-TodaysGamesOU <- PullOddsFunc("ou", bet365books)
-TodaysGamesPS <- PullOddsFunc("pointspread", bet365books)
+TodaysGamesML <- PullOddsFunc("moneyline", bodogbooks)
+TodaysGamesOU <- PullOddsFunc("ou", bodogbooks)
+TodaysGamesPS <- PullOddsFunc("pointspread", bodogbooks)
 
 
 
