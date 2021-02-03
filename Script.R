@@ -17,7 +17,7 @@ library(plotly)
 library(janitor)
 library(readxl)
 
-#Logos Dataset
+#Logos and team abbreviations Dataset
 Logos <- read_excel("Logos.xlsx")
 
 #csv is read in weird so the column names don't matchup properly, I'll fix it later
