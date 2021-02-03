@@ -6,7 +6,7 @@
 
 &nbsp;
 
-<div style="text-align:justify;"> There is also an Excel file included here that contains links to the team logos of all 347 Division 1 teams playing this year (2020/2021 season).  I will attempt to keep this file updated every year especially since conferences like the Ivy League for example are not playing this year due to COVID. </div>
+<div style="text-align:justify;"> There is also an Excel file included here that contains links to the team logos of all 357 Division 1 teams and their respective abbreviations.  I will attempt to keep this file updated every year as teams transition to and from Division 1. </div>
 
 &nbsp;
 
