@@ -9,7 +9,7 @@ Created on Mon Feb  1 13:07:41 2021
 
 #You may need to install pysbr and fake_useragent, you can use the following pip commands for this
 #!pip install python-sbr
-#Missing dependancy for pysbr for fake_useragent, need to install it
+#Missing dependancy fake_useragent for pysbr, need to install it
 #!pip install fake_useragent
 
 #%%
@@ -34,22 +34,32 @@ def PullOddsFunc (OddsType, Bookies):
 
     cl = pysbr.CurrentLines(e.ids(), sport.market_ids([OddsType]), sb.ids(Bookies))
     
-    return cl.dataframe(e)[cols]
+    output = cl.dataframe(e)[cols]
+    
+    #Abbreviaition isn't included in ou
+    if OddsType == "moneyline" or "pointspread":
+        if len(output[(output['participant'] == "DSU") & output['event'].str.contains('Dixie')]) >= 1:
+            #Resolve DSU conflict by changing Dixie St. abbreviation to DXST
+            output.loc[(output['participant'] == "DSU") & (output['event'].str.contains('Dixie')) , 'participant'] = 'DXST'
+            return output
+        else:
+            return output
+    else:
+            return output
 
 #%%
-#Testing with just bet365 right now to simplify things in shiny
-bet365books = ["bet365"]
+#Testing with just bodog right now because they come out with moneyline odds first and it simplifies things in shiny
+bodogbooks = ["bodog"]
 
-#Will use this later to allow users to choose their bookie, have to set thigns up with just one first though 
+#Will use this later to allow users to choose their bookie, have to set things up with just one first though 
 #books=["bet365","bodog","pinnacle"]
 
-#Example use of the function, returns a data table with requested information
-#PullOddsFunc("ou", books) 
-
-#OUtodaysgames = PullOddsFunc("ou", books)
+#Example uses of the function, returns a data table with requested information
+#PullOddsFunc("moneyline", bodogbooks) 
+#OUtodaysgames = PullOddsFunc("ou", bodogbooks)
 
 #%%
-#Used this to get a close approximation of the proper logos for each team
+#Used this to get a close approximation of the proper abbreviation for each team
 
 # TeamKeys = pysbr.NCAAB()._team_ids
 # import pandas
@@ -65,6 +75,8 @@ bet365books = ["bet365"]
 # df = pandas.DataFrame(Names,columns=['TEAM'])
 # df['Abbreviations'] = Abbreviations
 
-
+#Export into Excel to matchup with team logo links
 # df.to_excel (r'NameAbbrevs.xlsx', index = False, header=True)
 
+    
+    
