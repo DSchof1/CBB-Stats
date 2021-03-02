@@ -197,6 +197,13 @@ FieldGoalAttempts <- function(year){
   
   FGATable <- na.omit(FGATable)
   
+  #Add a column of FG attempts per game
+  FGATable$FGAPG <- (FGATable$FGA/FGATable$G)
+  
+  #Add a column of 3 point FG attempts per game
+  FGATable$FG3APG <- (FGATable$`3PA`/FGATable$G)
+  
+  
   return(FGATable)
   
 }
