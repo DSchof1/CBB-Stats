@@ -148,7 +148,7 @@ if(F){
 }
 
 
-BT2021DataNoDecimals <- BartDataScrape(2021)
+BT2021DataNoDecimals <- suppressWarnings(BartDataScrape(2021))
 
 #Getting more exact decimal points for ADJOE, ADJDE, and BARTHAG
 #This helps to more accurately predict Log5 and Game Score
@@ -174,6 +174,32 @@ NCAA <- relocate(NCAA, TEAM)
 NCAA$BARTHAG <- 0.5
 
 
+#Function to pull field goal attempts and games played from sports reference
+#Games played is pulled to compare to Bart Torvik to make sure everything is up to date
+
+FieldGoalAttempts <- function(year){
+  url <- paste0("https://www.sports-reference.com/cbb/seasons/",as.character(year),"-school-stats.html")
+  page <- read_html(url)
+  
+  
+  tables <- page %>% html_nodes("table") %>% html_table()
+  FGATable <- as.data.table(tables[1])
+  FGATable <- data.frame(FGATable)
+  keeps <- c("X.1","Overall","Totals.1","Totals.2","Totals.4","Totals.5")
+  FGATable <- FGATable[keeps]
+  FGATable <- FGATable %>% row_to_names(row_number = 1, remove_row=TRUE)
+  
+  FGATable$G <- suppressWarnings(as.integer(FGATable$G))
+  FGATable$FG <- suppressWarnings(as.integer(FGATable$FG))
+  FGATable$FGA <- suppressWarnings(as.integer(FGATable$FGA))
+  FGATable$`3P` <- suppressWarnings(as.integer(FGATable$`3P`))
+  FGATable$`3PA` <- suppressWarnings(as.integer(FGATable$`3PA`))
+  
+  FGATable <- na.omit(FGATable)
+  
+  return(FGATable)
+  
+}
 
 
-
+FGATable <- FieldGoalAttempts(2021)
