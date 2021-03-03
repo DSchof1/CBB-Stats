@@ -135,18 +135,6 @@ GameScoreAtHomeTeam <- function(Home, Away, NCAA){
   return(HomeScore)
 }
 
-#I will be using this later for some regression models, but it takes time to scrape prior data so it is omitted for now
-if(F){
-  #Empty data frame to be filled with training data for regression analysis
-  BTData <- data.table()
-  
-  # Build the data table
-  for (year in 2008:2019) {
-    BTYear <- BartDataScrape(year)
-    BTData <- rbind(BTData, BTYear)
-  }
-}
-
 
 BT2021DataNoDecimals <- suppressWarnings(BartDataScrape(2021))
 
@@ -173,40 +161,75 @@ NCAA <- relocate(NCAA, TEAM)
 #Barthag can take a value between 0 and 1
 NCAA$BARTHAG <- 0.5
 
-
-#Function to pull field goal attempts and games played from sports reference
-#Games played is pulled to compare to Bart Torvik to make sure everything is up to date
-
-FieldGoalAttempts <- function(year){
-  url <- paste0("https://www.sports-reference.com/cbb/seasons/",as.character(year),"-school-stats.html")
-  page <- read_html(url)
+#Function to get a table of urls to all NCAA basketball stat tables on teamrankings.com
+#Also has shortened variable explanations
+TeamRankingsPull <- function(){
+  
+  tr_url <- "https://www.teamrankings.com/ncb/stats/"
+  tr <- read_html(tr_url)
+  
+  tr_links <- tr %>% html_nodes("a") %>% html_attr("href")
   
   
-  tables <- page %>% html_nodes("table") %>% html_table()
-  FGATable <- as.data.table(tables[1])
-  FGATable <- data.frame(FGATable)
-  keeps <- c("X.1","Overall","Totals.1","Totals.2","Totals.4","Totals.5")
-  FGATable <- FGATable[keeps]
-  FGATable <- FGATable %>% row_to_names(row_number = 1, remove_row=TRUE)
+  length(tr_links[str_detect(tr_links,"ncaa-basketball/stat")])
+  ncb_links <- tr_links[str_detect(tr_links,"ncaa-basketball/stat")]
+  ncbdf <- data.frame(ncb_links)
+  StatNames <- c("ppg","avg scoring margin", "OE", "Floor %", "1stH pts/G", "2ndH pts/G", "OT pts/G",
+                 "avg 1stH margin", "avg 2ndH margin", "OT margin", "pts from 2FG", "pts from 3FG",
+                 "pct pts 2FG", "pct pts 3FG", "pct pts FT", "shooting %", "EFG %", "3FG %", "2FG %",
+                 "FT %", "TS %", "FG made/G", "FGA/G", "3P made/G", "3PA/G", "FT made/G", "FTA/G",
+                 "3FG rate", "2FG rate", "FTA per FGA", "FT made/100 pos", "FT rate", "non-blocked 2FG %",
+                 "OReb/G", "DReb/G", "TeamReb/G", "TotReb/G", "OReb %", "DReb %", "TotReb %", "Blks/G",
+                 "Steals/G", "Blk %", "Steals/poss", "Steal %", "Ast/G", "TO/G", "TO/poss", "Ast/TO",
+                 "Ast/FG made", "Ast/poss", "TO %", "PF/G", "PF/poss", "PF %", "Opp PPG", "Opp avg score margin",
+                 "D Eff", "Opp floor %", "Opp 1stH pts/G", "Opp 2ndH pts/G", "Opp OT pts/G", "Opp pts from 2FG",
+                 "Opp pts from 3FG", "Opp pct pts from 2FG", "Opp pct pts from 3FG", "Opp pct pts from FT",
+                 "Opp shooting %", "OPP EFG %", "Opp 3FG %", "Opp 2FG %", "Opp FT %", "Opp TS %", "Opp FG made/G",
+                 "Opp FGA/G", "Opp 3P made/G", "Opp 3PA/G", "Opp FT made/G", "Opp FTA/G", "Opp 3FG rate",
+                 "Opp 2FG rate", "Opp FTA per FGA", "Opp FT made/100 pos", "Opp FT rate", "Opp non-blocked 2FG %",
+                 "Opp OReb/G", "Opp DReb/G", "Opp TeamReb/G", "Opp TotReb/G", "Opp OReb %", "Opp DReb %",
+                 "Opp Blks/G", "Opp Steals/G", "Opp Blk %", "Opp Steals/poss", "Opp Steal %", "Opp Ast/G",
+                 "Opp TO/G", "Opp Ast/TO", "Opp Ast/FG made", "Opp Ast/poss", "Opp TO/poss", "Opp TO %",
+                 "Opp PF/G", "Opp PF/poss", "Opp PF %", "G played", "poss/G", "extra chances/G", "Effective poss ratio",
+                 "Opp Effective poss ratio", "W % all games", "W % close games", "Opp W % all games", "Opp W % close games")
   
-  FGATable$G <- suppressWarnings(as.integer(FGATable$G))
-  FGATable$FG <- suppressWarnings(as.integer(FGATable$FG))
-  FGATable$FGA <- suppressWarnings(as.integer(FGATable$FGA))
-  FGATable$`3P` <- suppressWarnings(as.integer(FGATable$`3P`))
-  FGATable$`3PA` <- suppressWarnings(as.integer(FGATable$`3PA`))
+  ncbdf <- ncbdf %>% mutate(StatNames)
+  ncbdf <- ncbdf %>% mutate(url = paste0('https://www.teamrankings.com', ncb_links))
   
-  FGATable <- na.omit(FGATable)
-  
-  #Add a column of FG attempts per game
-  FGATable$FGAPG <- (FGATable$FGA/FGATable$G)
-  
-  #Add a column of 3 point FG attempts per game
-  FGATable$FG3APG <- (FGATable$`3PA`/FGATable$G)
-  
-  
-  return(FGATable)
-  
+  return(ncbdf)
 }
 
+TeamRankingIndex <- TeamRankingsPull()
 
-FGATable <- FieldGoalAttempts(2021)
+#Function to pull a specific table from Team Rankings
+#See TeamRankingIndex$explanation to see the list of stat explanations
+
+TeamRankingsStatPull <- function(StatToPull){
+  RowIndex <- which(TeamRankingIndex$StatNames == StatToPull)
+  PulledRow <- subset(TeamRankingIndex[RowIndex,])
+  theurl <- PulledRow$url
+  
+  page <- read_html(theurl)
+  tables <- html_table(page)
+  StatDataset <- do.call(rbind, tables)
+  StatDataset[StatDataset == "--" ] <- NA
+  StatDataset <- StatDataset[complete.cases(StatDataset[3]),]
+  
+  for (i in 3:ncol(StatDataset)){
+    StatDataset[,i] <- as.numeric(sub("%", "",StatDataset[,i],fixed=TRUE))
+  }
+  
+  StatDataset[] <- lapply(StatDataset, function(x) {
+    inds <- match(x, Logos$TeamRankingsName)
+    ifelse(is.na(inds),x, Logos$TEAM[inds]) 
+  })
+  
+  
+  return(StatDataset)
+}
+
+#For example this returns the 3 point percentage of all teams
+#triplepct <- TeamRankingsStatPull("3FG %")
+
+
+
