@@ -106,11 +106,17 @@ Log5 <- function(PA, PB){
   return(WinningPercentage)
 }
 
+#Function to get the expected tempo between two teams
+ExpTempo <- function(Team1, Team2, NCAA){
+  ETempo <- (((Team1$ADJ_T/NCAA$ADJ_T)*(Team2$ADJ_T/NCAA$ADJ_T))*NCAA$ADJ_T)
+  
+  return(ETempo)
+}
 
 #Call this function to get the score for team1 against team2, reverse the inputs to get team2's score against team1
 #This is the score on a neutral court, ie no homecourt advantage
 GameScoreVS <- function(Team1, Team2, NCAA){
-  ETempo <- (((Team1$ADJ_T/NCAA$ADJ_T)*(Team2$ADJ_T/NCAA$ADJ_T))*NCAA$ADJ_T)/100
+  ETempo <- ExpTempo(Team1, Team2, NCAA)/100
   #The NCAA average ADJOE cancels out so I have left it out to simplify the calculation
   Team1Score <- (Team1$ADJOE)*(Team2$ADJDE/NCAA$ADJDE)
   Team1ScoreAdj <- Team1Score*ETempo
