@@ -129,14 +129,14 @@ GameScoreVS <- function(Team1, Team2, NCAA){
 
 #Score for the Away Team
 GameScoreAtAwayTeam <- function(Home, Away, NCAA){
-  ETempo <- (((Home$ADJ_T/NCAA$ADJ_T)*(Away$ADJ_T/NCAA$ADJ_T))*NCAA$ADJ_T)/100
+  ETempo <- ExpTempo(Home, Away, NCAA)/100
   AwayScore <- ((Away$ADJOE*0.99)*((Home$ADJDE*0.99)/NCAA$ADJDE))*ETempo
   return(AwayScore)
 }
 
 #Score for the Home Team
 GameScoreAtHomeTeam <- function(Home, Away, NCAA){
-  ETempo <- (((Home$ADJ_T/NCAA$ADJ_T)*(Away$ADJ_T/NCAA$ADJ_T))*NCAA$ADJ_T)/100
+  ETempo <- ExpTempo(Home, Away, NCAA)/100
   HomeScore <- ((Home$ADJOE*1.01)*((Away$ADJDE*1.01)/NCAA$ADJDE))*ETempo
   return(HomeScore)
 }
@@ -230,6 +230,7 @@ TeamRankingsStatPull <- function(StatToPull){
     ifelse(is.na(inds),x, Logos$TEAM[inds]) 
   })
   
+  StatDataset <- StatDataset[ , !(names(StatDataset) %in% c("Rank"))]
   
   return(StatDataset)
 }
