@@ -371,7 +371,9 @@ Where:
 
 ### Simulation
 
-Still working on getting colours to match the teams.  It is menial, but time consuming.  I want to get the simulator done first. 
+Still working on getting colours to match the teams.  It is menial, but time consuming.  I want to get the simulator done first.
+
+An error might pop up in red, but give it a second and it should go away, not sure why this occurs since there clearly isn't an error.  
 
 &nbsp;
 
@@ -757,7 +759,7 @@ shinyApp(
   options = list(height = 500)
 )
 
-```   
+``` 
 
 
 
