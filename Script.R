@@ -16,12 +16,39 @@ library(stringr)
 library(plotly)
 library(janitor)
 library(readxl)
+library(RJSONIO)
 
 #Logos and team abbreviations Dataset
 Logos <- read_excel("Logos.xlsx")
 
-#csv is read in weird so the column names don't matchup properly, I'll fix it later
-ExactCurrentYearData <- read.csv("http://barttorvik.com/2021_team_results.csv")
+#Using JSON data now, so this cleans it for use in R
+ExactDataScrapeBT <- function(year){
+  TheURL <- paste0("https://barttorvik.com/", as.character(year), "_team_results.json")
+  json_file <- fromJSON(TheURL)
+  LoLoL <- as.data.frame(do.call(rbind, lapply(json_file, as.vector)))
+  
+  ExactCurrentYearData <- list()
+  
+  for (i in 1:length(LoLoL)){
+    ExactCurrentYearData <- cbind(ExactCurrentYearData,as.vector(unlist(LoLoL[[i]])))
+  }
+  ExactCurrentYearData <- data.frame(matrix(unlist(ExactCurrentYearData), ncol = 45, byrow = F))
+  
+  ExactCurrentYearData <- setnames(ExactCurrentYearData, old = c(names(ExactCurrentYearData)), new = c("rank","team","conf","record","adjoe","oe Rank","adjde",
+                                                                                                       "de Rank","barthag",	"Bartrank",	"proj. W",	"Proj. L",	"Pro Con W",
+                                                                                                       "Pro Con L",	"Con Rec.",	"sos",	"ncsos",	"consos",	"Proj. SOS",
+                                                                                                       "Proj. Noncon SOS",	"Proj. Con SOS",	"elite SOS",	"elite noncon SOS",
+                                                                                                       "Opp OE",	"Opp DE",	"Opp Proj. OE",	"Opp Proj DE",	"Con Adj OE",	"Con Adj DE",
+                                                                                                       "Qual O",	"Qual D",	"Qual Barthag",	"Qual Games",	"FUN",	"ConPF",	"ConPA",
+                                                                                                       "ConPoss",	"ConOE",	"ConDE",	"ConSOSRemain",	"Conf Win%",	"WAB",
+                                                                                                       "WAB Rk",	"Fun Rk", "adjt"))
+  ExactCurrentYearData$rank <- as.integer(ExactCurrentYearData$rank)
+  ExactCurrentYearData[,5:14] = as.numeric(as.matrix(ExactCurrentYearData[,5:14]))
+  ExactCurrentYearData[,16:45] = as.numeric(as.matrix(ExactCurrentYearData[,16:45]))
+  
+  return(ExactCurrentYearData)
+} 
+ExactCurrentYearData <- ExactDataScrapeBT(2021)
 
 #Function to scrape and clean current Bart Torvik data on College Basketball Teams
 BartDataScrape <- function(year){
@@ -147,10 +174,10 @@ BT2021DataNoDecimals <- suppressWarnings(BartDataScrape(2021))
 #Getting more exact decimal points for ADJOE, ADJDE, and BARTHAG
 #This helps to more accurately predict Log5 and Game Score
 AdjustDecimals <- function(CurrentYearDataSet){
-  CurrentYearDataSet$ADJOE <- ifelse(ExactCurrentYearData$rank == CurrentYearDataSet$TEAM, ExactCurrentYearData$record, NA)   
-  CurrentYearDataSet$ADJDE <- ifelse(ExactCurrentYearData$rank == CurrentYearDataSet$TEAM, ExactCurrentYearData$oe.Rank, NA)
-  CurrentYearDataSet$BARTHAG <- ifelse(ExactCurrentYearData$rank == CurrentYearDataSet$TEAM, ExactCurrentYearData$de.Rank, NA)
-  CurrentYearDataSet$ADJ_T <- ifelse(ExactCurrentYearData$rank == CurrentYearDataSet$TEAM, ExactCurrentYearData$Fun.Rk..adjt, NA)
+  CurrentYearDataSet$ADJOE <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjoe, NA)   
+  CurrentYearDataSet$ADJDE <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjde, NA)
+  CurrentYearDataSet$BARTHAG <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$barthag, NA)
+  CurrentYearDataSet$ADJ_T <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjt, NA)
   
   return(CurrentYearDataSet)
 }
