@@ -4,12 +4,13 @@
 #You may have to install some of these packages
 #You can un-comment lines 7, 8, and 9 and run them if you'd like it to automatically check and install missing packages
 
-#list.of.packages <- c("data.table","tidyverse", "XML", "rvest", "stringr", "plotly", "janitor", "readxl")
+#list.of.packages <- c("data.table","tidyverse", "xml2", "XML", "rvest", "stringr", "plotly", "janitor", "readxl", "RJSONIO", "shiny", "shinydashboard")
 #new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 #if(length(new.packages)) install.packages(new.packages, repos = "http://cran.us.r-project.org")
 
 library(data.table)
 library(tidyverse)
+library(xml2)
 library(XML)
 library(rvest)
 library(stringr)
