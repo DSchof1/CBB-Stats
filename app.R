@@ -501,7 +501,7 @@ server <- function(input, output) {
                     }
                     i=i+1
                 }
-                i <<- i
+                assign("NumOTs", i, envir=globalenv())
                 return(cat(paste0(input$SimAway, "  ", AScore, "         -         ", HScore, "  ", input$SimHome)))
             }
         }
@@ -520,7 +520,7 @@ server <- function(input, output) {
         }
         else if(AScore == HScore){
             
-            i <- as.integer(i)
+            i <- as.integer(NumOTs)
             if(i == 1){
                 return(paste0("Final Score in Single Overtime"))
             }
