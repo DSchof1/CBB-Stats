@@ -11,6 +11,7 @@
 library(data.table)
 library(tidyverse)
 library(XML)
+library(xml2)
 library(rvest)
 library(stringr)
 library(plotly)
@@ -249,9 +250,7 @@ TeamRankingsStatPull <- function(StatToPull){
   StatDataset[StatDataset == "--" ] <- NA
   StatDataset <- StatDataset[complete.cases(StatDataset[3]),]
   
-  for (i in 3:ncol(StatDataset)){
-    StatDataset[,i] <- as.numeric(sub("%", "",StatDataset[,i],fixed=TRUE))
-  }
+  StatDataset[c(3:8)] <- lapply(StatDataset[c(3:8)], function(x) as.numeric(gsub("%", "", x)))
   
   StatDataset[] <- lapply(StatDataset, function(x) {
     inds <- match(x, Logos$TeamRankingsName)
