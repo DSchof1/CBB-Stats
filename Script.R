@@ -18,6 +18,7 @@ library(plotly)
 library(janitor)
 library(readxl)
 library(httr)
+library(rmarkdown)
 #library(RJSONIO)
 
 set_config(config(ssl_verifypeer = FALSE))
