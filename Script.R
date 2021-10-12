@@ -20,7 +20,7 @@ library(readxl)
 library(httr)
 #library(RJSONIO)
 
-#set_config(config(ssl_verifypeer = FALSE))
+set_config(config(ssl_verifypeer = FALSE))
 options(RCurlOptions = list(ssl_verifypeer = FALSE))
 options(rsconnect.check.certificate = FALSE)
 
