@@ -8,7 +8,7 @@ ui <- dashboardPage(
     dashboardHeader(title = "NCAA Basketball Matchup Stats", titleWidth = 500),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt ")),
+            menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt")),
             menuItem("Methodology", tabName= "methodology", icon=icon("calculator")),
             menuItem("Simulation", tabName = "simulation", icon = icon("server"))
         )
