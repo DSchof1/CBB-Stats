@@ -4,7 +4,7 @@
 #You may have to install some of these packages
 #You can un-comment lines 7, 8, and 9 and run them if you'd like it to automatically check and install missing packages
 
-#list.of.packages <- c("data.table","tidyverse", "XML", "rvest", "stringr", "plotly", "janitor", "readxl", "RJSONIO", "shiny", "shinydashboard")
+#list.of.packages <- c("data.table","tidyverse", "XML", "rvest", "stringr", "plotly", "janitor", "readxl", "shiny", "shinydashboard", "httr")
 #new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 #if(length(new.packages)) install.packages(new.packages)
 
@@ -17,117 +17,44 @@ library(stringr)
 library(plotly)
 library(janitor)
 library(readxl)
-library(RJSONIO)
+library(httr)
+#library(RJSONIO)
 
+#set_config(config(ssl_verifypeer = FALSE))
+options(RCurlOptions = list(ssl_verifypeer = FALSE))
+options(rsconnect.check.certificate = FALSE)
 
 #Logos and team abbreviations Dataset
 Logos <- read_excel("Logos.xlsx")
 
 #Using JSON data now, so this cleans it for use in R
+#Due to a Lets Encrypt root certificate expiring the JSON method is now slightly deprecated and is adjusted here
 ExactDataScrapeBT <- function(year){
   TheURL <- paste0("https://barttorvik.com/", as.character(year), "_team_results.json")
-  json_file <- fromJSON(TheURL)
-  LoLoL <- as.data.frame(do.call(rbind, lapply(json_file, as.vector)))
+  WebScrape <- GET(TheURL)
+  ExactCurrentYearData <- as.data.frame(do.call(rbind, lapply(content(WebScrape,"parsed"), as.vector)))
   
-  ExactCurrentYearData <- list()
   
-  for (i in 1:length(LoLoL)){
-    ExactCurrentYearData <- cbind(ExactCurrentYearData,as.vector(unlist(LoLoL[[i]])))
-  }
-  ExactCurrentYearData <- data.frame(matrix(unlist(ExactCurrentYearData), ncol = 45, byrow = F))
-  
-  ExactCurrentYearData <- setnames(ExactCurrentYearData, old = c(names(ExactCurrentYearData)), new = c("rank","team","conf","record","adjoe","oe Rank","adjde",
-                                                                                                       "de Rank","barthag",	"Bartrank",	"proj. W",	"Proj. L",	"Pro Con W",
+  ExactCurrentYearData <- setnames(ExactCurrentYearData, old = c(names(ExactCurrentYearData)), new = c("rank","TEAM","conf","record","ADJOE","oe Rank","ADJDE",
+                                                                                                       "de Rank","BARTHAG",	"Bartrank",	"proj. W",	"Proj. L",	"Pro Con W",
                                                                                                        "Pro Con L",	"Con Rec.",	"sos",	"ncsos",	"consos",	"Proj. SOS",
                                                                                                        "Proj. Noncon SOS",	"Proj. Con SOS",	"elite SOS",	"elite noncon SOS",
                                                                                                        "Opp OE",	"Opp DE",	"Opp Proj. OE",	"Opp Proj DE",	"Con Adj OE",	"Con Adj DE",
                                                                                                        "Qual O",	"Qual D",	"Qual Barthag",	"Qual Games",	"FUN",	"ConPF",	"ConPA",
                                                                                                        "ConPoss",	"ConOE",	"ConDE",	"ConSOSRemain",	"Conf Win%",	"WAB",
-                                                                                                       "WAB Rk",	"Fun Rk", "adjt"))
+                                                                                                       "WAB Rk",	"Fun Rk", "ADJ_T"))
+  ExactCurrentYearData$TEAM <- as.character(ExactCurrentYearData$TEAM)
+  ExactCurrentYearData$conf <- as.character(ExactCurrentYearData$conf)
+  ExactCurrentYearData$record <- as.character(ExactCurrentYearData$record)
+  ExactCurrentYearData$`Con Rec.` <- as.character(ExactCurrentYearData$`Con Rec.`)
   ExactCurrentYearData$rank <- as.integer(ExactCurrentYearData$rank)
   ExactCurrentYearData[,5:14] = as.numeric(as.matrix(ExactCurrentYearData[,5:14]))
   ExactCurrentYearData[,16:45] = as.numeric(as.matrix(ExactCurrentYearData[,16:45]))
   
   return(ExactCurrentYearData)
-} 
+}
 ExactCurrentYearData <- ExactDataScrapeBT(2021)
 
-#Function to scrape and clean current Bart Torvik data on College Basketball Teams
-BartDataScrape <- function(year){
-  
-  theUrl <- paste0("https://barttorvik.com/trank.php?year=", as.character(year))
-  page <- read_html(theUrl)
-  
-  #Remove the class lowrow that has today's games and ranks of metrics and messes up data if not removed
-  lowrow <- page %>% html_nodes(".lowrow")
-  xml_remove(lowrow)
-  
-  #Create the table from scraped data
-  tables <- page %>% html_nodes("table") %>% html_table()
-  BTData <- as.data.table(tables[1])
-  
-  #Set the first row as column names
-  BTData <- BTData %>% row_to_names(row_number = 1, remove_row=TRUE)
-  
-  #Remove unnecessary columns 
-  BTData <- BTData[,-c(1,3,22)]
-  
-  #NAs introduced here for certain rows, but that's ok
-  BTData <- separate(data = BTData, col = Rec, into = c("W", "L"), sep = "-")
-  
-  #Remove Rows with NAs, ie removes annoying header rows
-  BTData <- na.omit(BTData)
-  
-  #Add Year as a value
-  BTData <- mutate(BTData, "YEAR" = year)
-  
-  #Rename columns to be consistent
-  colnames(BTData)[1] <- "TEAM"
-  colnames(BTData)[2] <- "G"
-  colnames(BTData)[3] <- "W"
-  colnames(BTData)[4] <- "L"
-  colnames(BTData)[5] <- "ADJOE"
-  colnames(BTData)[6] <- "ADJDE"
-  colnames(BTData)[7] <- "BARTHAG"
-  colnames(BTData)[8] <- "EFG_O"
-  colnames(BTData)[9] <- "EFG_D"
-  colnames(BTData)[10] <- "TOR"
-  colnames(BTData)[11] <- "TORD"
-  colnames(BTData)[12] <- "ORB"
-  colnames(BTData)[13] <- "DRB"
-  colnames(BTData)[14] <- "FTR"
-  colnames(BTData)[15] <- "FTRD"
-  colnames(BTData)[16] <- "X2P_O"
-  colnames(BTData)[17] <- "X2P_D"
-  colnames(BTData)[18] <- "X3P_O"
-  colnames(BTData)[19] <- "X3P_D"
-  colnames(BTData)[20] <- "ADJ_T"
-  
-  #Convert characters to numeric form
-  BTData$G <- as.integer(BTData$G)
-  BTData$W <- as.integer(BTData$W)
-  BTData$L <- as.integer(BTData$L)
-  BTData$ADJOE <- as.numeric(BTData$ADJOE)
-  BTData$ADJDE <- as.numeric(BTData$ADJDE)
-  BTData$BARTHAG <- as.numeric(BTData$BARTHAG)
-  BTData$EFG_O <- as.numeric(BTData$EFG_O)
-  BTData$EFG_D <- as.numeric(BTData$EFG_D)
-  BTData$TOR <- as.numeric(BTData$TOR)
-  BTData$TORD <- as.numeric(BTData$TORD)
-  BTData$ORB <- as.numeric(BTData$ORB)
-  BTData$DRB <- as.numeric(BTData$DRB)
-  BTData$FTR <- as.numeric(BTData$FTR)
-  BTData$FTRD <- as.numeric(BTData$FTRD)
-  BTData$X2P_O <- as.numeric(BTData$X2P_O)
-  BTData$X2P_D <- as.numeric(BTData$X2P_D)
-  BTData$X3P_O <- as.numeric(BTData$X3P_O)
-  BTData$X3P_D <- as.numeric(BTData$X3P_D)
-  BTData$ADJ_T <- as.numeric(BTData$ADJ_T)
-  
-
-  return(BTData)
-
-}
 
 #Chance of Team A beating Team B
 Log5 <- function(PA, PB){
@@ -171,30 +98,6 @@ GameScoreAtHomeTeam <- function(Home, Away, NCAA){
 }
 
 
-BT2021DataNoDecimals <- suppressWarnings(BartDataScrape(2021))
-
-#Getting more exact decimal points for ADJOE, ADJDE, and BARTHAG
-#This helps to more accurately predict Log5 and Game Score
-AdjustDecimals <- function(CurrentYearDataSet){
-  CurrentYearDataSet$ADJOE <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjoe, NA)   
-  CurrentYearDataSet$ADJDE <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjde, NA)
-  CurrentYearDataSet$BARTHAG <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$barthag, NA)
-  CurrentYearDataSet$ADJ_T <- ifelse(ExactCurrentYearData$team == CurrentYearDataSet$TEAM, ExactCurrentYearData$adjt, NA)
-  
-  return(CurrentYearDataSet)
-}
-
-BT2021Data <- AdjustDecimals(BT2021DataNoDecimals)
-
-
-#Single row dataset of the NCAA averages for the current year
-NCAA <- BT2021Data %>% summarise_if(is.numeric, mean, na.rm = TRUE)
-NCAA <- mutate(NCAA, "TEAM" = "NCAA")
-NCAA <- relocate(NCAA, TEAM)
-
-#All Barthag ratings are based against the NCAA average, therefore this must be changed to 0.5
-#Barthag can take a value between 0 and 1
-NCAA$BARTHAG <- 0.5
 
 #Function to get a table of urls to all NCAA basketball stat tables on teamrankings.com
 #Also has shortened variable explanations
@@ -238,11 +141,12 @@ TeamRankingIndex <- TeamRankingsPull()
 
 #Function to pull a specific table from Team Rankings
 #See TeamRankingIndex$explanation to see the list of stat explanations
+#I believe that if you input a year that leads to a date beyond whatever today's date is causes it to just take the most up to date numbers
 
-TeamRankingsStatPull <- function(StatToPull){
+TeamRankingsStatPull <- function(StatToPull,year){
   RowIndex <- which(TeamRankingIndex$StatNames == StatToPull)
   PulledRow <- subset(TeamRankingIndex[RowIndex,])
-  theurl <- PulledRow$url
+  theurl <- paste0(PulledRow$url,"?date=",year,"-07-01")
   
   page <- read_html(theurl)
   tables <- html_table(page)
@@ -250,20 +154,76 @@ TeamRankingsStatPull <- function(StatToPull){
   StatDataset[StatDataset == "--" ] <- NA
   StatDataset <- StatDataset[complete.cases(StatDataset[3]),]
   
+  
   StatDataset[c(3:8)] <- lapply(StatDataset[c(3:8)], function(x) as.numeric(gsub("%", "", x)))
+  
   
   StatDataset[] <- lapply(StatDataset, function(x) {
     inds <- match(x, Logos$TeamRankingsName)
     ifelse(is.na(inds),x, Logos$TEAM[inds]) 
   })
   
+  
   StatDataset <- StatDataset[ , !(names(StatDataset) %in% c("Rank"))]
+  
+  #names(StatDataset)[names(StatDataset) == 'Team'] <- 'team'
+  
   
   return(StatDataset)
 }
 
 #For example this returns the 3 point percentage of all teams
-#triplepct <- TeamRankingsStatPull("3FG %")
+#triplepct <- TeamRankingsStatPull("3FG %",2021)
+
+#Adding some missing stats from the JSON dataset back to the dataset
+#This also helps to get around the Let's Encrypt issue that has been plaguing the data pull
+Add_to_JSON <- function(JSONDataSet, year){
+  FullData <- merge(JSONDataSet,TeamRankingsStatPull("EFG %",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "EFG_O"
+  FullData <- merge(FullData,TeamRankingsStatPull("OPP EFG %",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "EFG_D"
+  FullData <- merge(FullData,TeamRankingsStatPull("TO/poss",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "TOR"
+  FullData <- merge(FullData,TeamRankingsStatPull("Opp TO/poss",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "TORD"
+  FullData <- merge(FullData,TeamRankingsStatPull("OReb %",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "ORB"
+  FullData <- merge(FullData,TeamRankingsStatPull("Opp OReb %",year)[,c(1,2)], by.x="TEAM",by.y="Team",sort = FALSE)
+  names(FullData)[ncol(FullData)] <- "DRB"
+  
+  FullData <- FullData %>% select(-contains(c("rank","Rank","Rk")))
+  
+  return(FullData)
+  
+}
+#Example use
+#Add_to_JSON(ExactCurrentYearData,2021)
+
+BT2021Data <- Add_to_JSON(ExactCurrentYearData,2021)
+
+#Single row dataset of the NCAA averages for the current year
+#Function to create a single row dataset of the NCAA averages for the current year
+NCAA_Row <- function(dataset){
+  NCAA <- dataset %>% summarise_if(is.numeric, mean, na.rm = TRUE)
+  NCAA <- mutate(NCAA, "TEAM" = "NCAA")
+  #NCAA <- relocate(NCAA, TEAM)
+  
+  #Barthag can take a value between 0 and 1
+  #All Barthag ratings are based against the NCAA average, therefore this must be changed to 0.5
+  NCAA$BARTHAG <- 0.5
+  
+  NCAA$conf <- "NCAA"
+  NCAA$record <- NA
+  NCAA$`Con Rec.` <- NA
+  
+  NCAA <- NCAA[names(dataset)]
+  
+  return(NCAA)
+  
+}
+
+NCAA <- NCAA_Row(BT2021Data)
+
 
 
 

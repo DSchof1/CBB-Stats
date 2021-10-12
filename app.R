@@ -8,7 +8,7 @@ ui <- dashboardPage(
     dashboardHeader(title = "NCAA Basketball Matchup Stats", titleWidth = 500),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Matchup Utility", tabName = "dashboard", icon = icon("dashboard")),
+            menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt ")),
             menuItem("Methodology", tabName= "methodology", icon=icon("calculator")),
             menuItem("Simulation", tabName = "simulation", icon = icon("server"))
         )
@@ -166,7 +166,7 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
     
-    FGAPG <- TeamRankingsStatPull("FGA/G")
+    FGAPG <- TeamRankingsStatPull("FGA/G",2021)
     NCAAFGA <- FGAPG %>% summarise_if(is.numeric, mean)
     NCAAFGA <- mutate(NCAAFGA, "Team" = "NCAA")
     NCAAFGA <- relocate(NCAAFGA, Team)
