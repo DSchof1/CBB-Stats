@@ -21,6 +21,10 @@ library(httr)
 library(rmarkdown)
 #library(RJSONIO)
 
+#set the year here for easy updating or running for previous years
+yr <- 2022
+
+
 set_config(config(ssl_verifypeer = FALSE))
 options(RCurlOptions = list(ssl_verifypeer = FALSE))
 options(rsconnect.check.certificate = FALSE)
@@ -54,7 +58,7 @@ ExactDataScrapeBT <- function(year){
   
   return(ExactCurrentYearData)
 }
-ExactCurrentYearData <- ExactDataScrapeBT(2021)
+ExactCurrentYearData <- ExactDataScrapeBT(yr)
 
 
 #Chance of Team A beating Team B
@@ -200,7 +204,7 @@ Add_to_JSON <- function(JSONDataSet, year){
 #Example use
 #Add_to_JSON(ExactCurrentYearData,2021)
 
-BT2021Data <- Add_to_JSON(ExactCurrentYearData,2021)
+BTData <- Add_to_JSON(ExactCurrentYearData,yr)
 
 #Single row dataset of the NCAA averages for the current year
 #Function to create a single row dataset of the NCAA averages for the current year
@@ -223,7 +227,7 @@ NCAA_Row <- function(dataset){
   
 }
 
-NCAA <- NCAA_Row(BT2021Data)
+NCAA <- NCAA_Row(BTData)
 
 
 
