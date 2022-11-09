@@ -9,7 +9,7 @@
 
 &nbsp;
 
-<div style="text-align:justify;"> There is also an Excel file included here that contains links to the team logos of all 357 Division 1 teams and their respective abbreviations.  I will attempt to keep this file updated every year as teams transition to and from Division 1. </div>
+<div style="text-align:justify;"> There is also an Excel file included here that contains links to the names and logos of all 363 Division 1 basketball schools. </div>
 
 &nbsp;
 
