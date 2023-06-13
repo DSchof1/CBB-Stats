@@ -145,7 +145,7 @@ Where:
 * $AdjDE_{NCAA} =$ Adjusted Defensive Efficiency of the average NCAA Division 1 team
 * $E(Tempo_{A,B}) =$ The expected number of possessions that team and A and B will each have
 
-*Note:* $E(Tempo_{A,B})$ *is divided by 100 because tempo is generally expressed as points per 100 possessions, therefore we divide by 100 to find points per single posession.*
+*Note:* $E(Tempo_{A,B})$ *is divided by 100 because tempo is generally expressed as points per 100 possessions, therefore we divide by 100 to find points per single possession.*
 
 &nbsp;
 

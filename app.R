@@ -3,6 +3,7 @@ source("Script.R")
 library(shiny)
 library(shinydashboard)
 library(markdown)
+library(shinyalert)
 #library(shinydashboardPlus)
 
 ui <- dashboardPage(
@@ -162,11 +163,25 @@ ui <- dashboardPage(
                     
             )
         )
+        ,useShinyalert(),
+        tags$style('.alert_button .confirm {background-color: #2874A6 !important;}')
     )
 )
 
 server <- function(input, output) {
     
+  shinyalert(title = "Updates as of June 2023!",
+             closeOnClickOutside = TRUE,
+             html = TRUE,
+             text = tagList(
+               tags$h4("What's New"),
+               tags$li(style = "text-align: left;", "All logos have been updated using a new method to pull them"),
+               tags$h4("What's Coming"),
+               tags$li(style = "text-align: left;", "There are big layout and visual changes coming"),
+               tags$li(style = "text-align: left;", "An updated methodology section talking more about the simulator and my use of the binomial distribution is in the works"),
+               tags$li(style = "text-align: left;", "Some small corrections to the probabilities in the simulation charts are also being worked on")),
+             className = "alert_button")
+  
     FGAPG <- TeamRankingsStatPull("FGA/G",yr)
     NCAAFGA <- FGAPG %>% summarise_if(is.numeric, mean)
     NCAAFGA <- mutate(NCAAFGA, "Team" = "NCAA")
