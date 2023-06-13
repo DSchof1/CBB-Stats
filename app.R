@@ -195,7 +195,7 @@ server <- function(input, output) {
             img(src = TeamLogoAway$LOGO, height="50%", width="50%") 
         }
         else{
-            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="left")
+            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
         }
     })
     
@@ -205,7 +205,7 @@ server <- function(input, output) {
             img(src = TeamLogoSimAway$LOGO, height="50%", width="50%") 
         }
         else{
-            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="left")
+            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
         }
     })
     
@@ -215,7 +215,7 @@ server <- function(input, output) {
             img(src = TeamLogoHome$LOGO, height="50%", width="50%") 
         }
         else{
-            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="right")
+            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
         }
     })
     
@@ -225,7 +225,7 @@ server <- function(input, output) {
             img(src = TeamLogoSimHome$LOGO, height="50%", width="50%") 
         }
         else{
-            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="right")
+            img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
         }
     })
     
