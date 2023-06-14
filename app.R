@@ -163,8 +163,10 @@ ui <- dashboardPage(
                     
             )
         )
-        ,useShinyalert(),
-        tags$style('.alert_button .confirm {background-color: #2874A6 !important;}')
+        ,tags$style('.alert_button .confirm {background-color: #2874A6 !important;}'),
+        tags$head(tags$style(HTML('/*body*/
+                                  .content-wrapper, .right-side {
+                                  background-color: #FFFFFF}')))
     )
 )
 
