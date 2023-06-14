@@ -11,8 +11,9 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Simulation", tabName = "simulation", icon = icon("server")),
+      menuItem("Simulation Methodology", tabName = "simulation_methodology", icon = icon("cogs")),
       menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt")),
-      menuItem("Methodology", tabName= "methodology", icon=icon("calculator"))
+      menuItem("Log5 Methodology", tabName= "log5_methodology", icon=icon("calculator"))
     )
   ),
   dashboardBody(
@@ -84,8 +85,11 @@ ui <- dashboardPage(
               tags$style(type='text/css', "#Dash { width:100%; margin-top:-10px; font-size: 40px;
                                  font-style: bold;}")
       ),
-      tabItem(tabName = "methodology",
+      tabItem(tabName = "log5_methodology",
               withMathJax(includeMarkdown("Methodology.Rmd"))
+      ),
+      tabItem(tabName = "simulation_methodology",
+              withMathJax(includeMarkdown("Binomial Methodology.Rmd"))
       ),
       tabItem(tabName ="simulation",
               fluidRow(
@@ -163,7 +167,7 @@ ui <- dashboardPage(
               
       )
     )
-    ,tags$style('.alert_button .confirm {background-color: #2874A6 !important;}'),
+    ,tags$style('.landing_popup .confirm {background-color: #2874A6 !important;}'),
     tags$head(tags$style(HTML('/*body*/
                                   .content-wrapper, .right-side {
                                   background-color: #FFFFFF}')))
@@ -178,11 +182,12 @@ server <- function(input, output) {
              text = tagList(
                tags$h4("What's New"),
                tags$li(style = "text-align: left;", "All logos have been updated using a new method to pull them"),
+               tags$li(style = "text-align: left;", "The Simulation page has been moved to be the default landing page"),
+               tags$li(style = "text-align: left;","A methodology section has been added to explain the math behind the simulation"),
                tags$h4("What's Coming"),
-               tags$li(style = "text-align: left;", "There are big layout and visual changes coming"),
-               tags$li(style = "text-align: left;", "An updated methodology section talking more about the simulator and my use of the binomial distribution is in the works"),
-               tags$li(style = "text-align: left;", "Some small corrections to the probabilities in the simulation charts are also being worked on")),
-             className = "alert_button")
+               tags$li(style = "text-align: left;", "A big overhaul of the methodology sections is being worked on to make them more readable"),
+               tags$li(style = "text-align: left;", "Some small corrections to the probabilities in the simulation charts")),
+             className = "landing_popup")
   
   FGAPG <- TeamRankingsStatPull("FGA/G",yr)
   NCAAFGA <- FGAPG %>% summarise_if(is.numeric, mean)
