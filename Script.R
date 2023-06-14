@@ -81,7 +81,7 @@ GameScoreVS <- function(Team1, Team2, NCAA){
   #The NCAA average ADJOE cancels out so I have left it out to simplify the calculation
   Team1Score <- (Team1$ADJOE)*(Team2$ADJDE/NCAA$ADJDE)
   Team1ScoreAdj <- Team1Score*ETempo
-
+  
   return(Team1ScoreAdj)
 }
 
