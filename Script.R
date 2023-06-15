@@ -214,8 +214,6 @@ NCAA_Row <- function(dataset){
   #NCAA <- relocate(NCAA, TEAM)
   
   #Barthag can take a value between 0 and 1
-  #All Barthag ratings are based against the NCAA average, therefore this must be changed to 0.5
-  NCAA$BARTHAG <- 0.5
   
   NCAA$conf <- "NCAA"
   NCAA$record <- NA

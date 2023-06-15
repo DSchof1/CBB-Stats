@@ -181,7 +181,7 @@ where:
 
 <h4> COVID and Home Court Advantage </h4>
 
-<div style="text-align:justify;"> For the entire 2020-2021 season there were either no fans in attendance or a severely restricted amount. Fans surely have an impact on the multiplier for home court advantage. Therefore without them the multiplier has to be lower. The multiplier in this model has been set to 1.1% to account for this change. While this change was implemented for the 2020-2021 season it has performed reasonably well as fans have been permitted back into arenas at full capacity. </div>
+<div style="text-align:justify;"> For the entire 2020-2021 season there were either no fans in attendance or a severely restricted amount. Fans surely have an impact on the multiplier for home court advantage. Therefore without them the multiplier has to be lower. The multiplier in this model has been set to 1% to account for this change. While this change was implemented for the 2020-2021 season it has performed reasonably well as fans have been permitted back into arenas at full capacity. </div>
 
 &nbsp;
 
