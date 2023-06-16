@@ -4,11 +4,7 @@ library(shiny)
 library(shinydashboard)
 library(markdown)
 library(shinyalert)
-library(knitr)
 #library(shinydashboardPlus)
-
-rmdfiles <- c("Binomial Methodology.rmd", "Methodology.rmd")
-sapply(rmdfiles, knit, quiet = T)
 
 
 ui <- dashboardPage(
@@ -91,10 +87,10 @@ ui <- dashboardPage(
                                  font-style: bold;}")
       ),
       tabItem(tabName = "log5_methodology",
-              withMathJax(includeMarkdown("Methodology.md"))
+              withMathJax(includeMarkdown("Methodology.Rmd"))
       ),
       tabItem(tabName = "simulation_methodology",
-              withMathJax(includeMarkdown("Binomial Methodology.md"))
+              withMathJax(includeMarkdown("Binomial Methodology.Rmd"))
       ),
       tabItem(tabName ="simulation",
               fluidRow(
