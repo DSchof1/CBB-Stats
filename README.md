@@ -9,11 +9,8 @@
 
 &nbsp;
 
-<div style="text-align:justify;"> There is also an Excel file included here that contains links to the names and logos of all 363 Division 1 basketball schools. </div>
+<div style="text-align:justify;"> There is also an Excel file included here that contains links to the names and logos of all Division 1 basketball schools. </div>
 
-&nbsp;
-
-<div style="text-align:justify;"> I plan on continuing to add interactive content and the rationale behind it, espeially as we progress towards the Conference Tournaments and March Madness.  More specific information can be found at the bottom of the Methodology section in the <a href="https://dschof1.shinyapps.io/cbb_stats/">College Basketball Matchup Predictor</a>. </div>
 
 &nbsp;
 
