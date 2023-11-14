@@ -22,7 +22,7 @@ library(rmarkdown)
 #library(RJSONIO)
 
 #set the year here for easy updating or running for previous years
-yr <- 2023
+yr <- 2024
 
 
 set_config(config(ssl_verifypeer = FALSE))

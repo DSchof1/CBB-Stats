@@ -181,7 +181,7 @@ server <- function(input, output) {
              html = TRUE,
              text = tagList(
                tags$h4("Welcome to the 2023/2024 College Basketball Season!"),
-               tags$li(style = "text-align: left;", "Since some team data (like eFG%) is not available/not very good at the start of the season the app will be updated for the new season in a week or two"),
+               tags$li(style = "text-align: left;","Data has been updated for the new season!"),
                tags$h4("What's New"),
                tags$li(style = "text-align: left;", "All logos have been updated using a new method to pull them"),
                tags$li(style = "text-align: left;", "The Simulation page has been moved to be the default landing page"),
