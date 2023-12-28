@@ -24,14 +24,14 @@ ui <- dashboardPage(
                        selectInput(
                          inputId = "Away",
                          label = h3("Away Team"),
-                         choices = c(NCAA$TEAM, sort(unique(BTData$TEAM)))),
+                         choices = c(NCAA$TEAM, sort(unique(master_data[master_data$TEAM != "NCAA",]$TEAM)))),
                        align="center"),
                 column (2, h3("")),
                 column(5,
                        selectInput(
                          inputId = "Home",
                          label = h3("Home Team"),
-                         choices = c(NCAA$TEAM, sort(unique(BTData$TEAM)))
+                         choices = c(NCAA$TEAM, sort(unique(master_data[master_data$TEAM != "NCAA",]$TEAM)))
                        ),
                        align="center")
               ),
@@ -97,14 +97,14 @@ ui <- dashboardPage(
                        selectInput(
                          inputId = "SimAway",
                          label = h3("Away Team"),
-                         choices = c(NCAA$TEAM, sort(unique(BTData$TEAM)))),
+                         choices = c(NCAA$TEAM, sort(unique(master_data[master_data$TEAM != "NCAA",]$TEAM)))),
                        align="center"),
                 column (2, h3("")),
                 column(5,
                        selectInput(
                          inputId = "SimHome",
                          label = h3("Home Team"),
-                         choices = c(NCAA$TEAM, sort(unique(BTData$TEAM)))
+                         choices = c(NCAA$TEAM, sort(unique(master_data[master_data$TEAM != "NCAA",]$TEAM)))
                        ),
                        align="center")
               ),
@@ -191,12 +191,6 @@ server <- function(input, output) {
                tags$li(style = "text-align: left;", "Some small corrections to the probabilities in the simulation charts")),
              className = "landing_popup")
   
-  FGAPG <- TeamRankingsStatPull("FGA/G",yr)
-  NCAAFGA <- FGAPG %>% summarise_if(is.numeric, mean)
-  NCAAFGA <- mutate(NCAAFGA, "Team" = "NCAA")
-  NCAAFGA <- relocate(NCAAFGA, Team)
-  FGAPG <- rbind(FGAPG, NCAAFGA)
-  NCAABTData <- rbind(BTData, NCAA)
   
   output$imgAway <- renderUI({
     if (input$Away %in% Logos$TEAM){
@@ -239,9 +233,8 @@ server <- function(input, output) {
   })
   
   output$Log5 <- renderPrint({
-    NCAABTData <- rbind(BTData, NCAA)
-    TeamHome <- filter(NCAABTData, TEAM == input$Home)
-    TeamAway <- filter(NCAABTData, TEAM == input$Away)
+    TeamHome <- filter(master_data, TEAM == input$Home)
+    TeamAway <- filter(master_data, TEAM == input$Away)
     BarthagHomeAdj <- as.numeric(1 - (1/(1+((TeamHome$ADJOE*1.01)/(TeamHome$ADJDE*0.99))^11.5)))
     BarthagAwayAdj <- as.numeric(1 - (1/(1+((TeamAway$ADJOE*0.99)/(TeamAway$ADJDE*1.01))^11.5)))
     
@@ -285,9 +278,8 @@ server <- function(input, output) {
   })
   
   output$TeamAwayScore <- renderPrint({
-    NCAABTData <- rbind(BTData, NCAA)
-    TeamAway <- filter(NCAABTData, TEAM == input$Away)
-    TeamHome <- filter(NCAABTData, TEAM == input$Home)
+    TeamAway <- filter(master_data, TEAM == input$Away)
+    TeamHome <- filter(master_data, TEAM == input$Home)
     if(input$vsat == "vs"){
       return(cat(paste0(round(GameScoreVS(TeamAway,TeamHome,NCAA),2))))
     }
@@ -303,9 +295,8 @@ server <- function(input, output) {
   })
   
   output$TeamHomeScore <- renderPrint({
-    NCAABTData <- rbind(BTData, NCAA)
-    TeamAway <- filter(NCAABTData, TEAM == input$Away)
-    TeamHome <- filter(NCAABTData, TEAM == input$Home)
+    TeamAway <- filter(master_data, TEAM == input$Away)
+    TeamHome <- filter(master_data, TEAM == input$Home)
     if(input$vsat == "vs"){
       return(cat(paste0(round(GameScoreVS(TeamHome,TeamAway,NCAA),2))))
     }
@@ -319,13 +310,11 @@ server <- function(input, output) {
   
   output$NormCurves <- renderPlot({
     
-    TeamHome <- filter(NCAABTData, TEAM == input$SimHome)
-    TeamAway <- filter(NCAABTData, TEAM == input$SimAway)
-    TeamHomeFGAPG <- filter(FGAPG, Team == input$SimHome)
-    TeamAwayFGAPG <- filter(FGAPG, Team == input$SimAway)
+    TeamHome <- filter(master_data, TEAM == input$SimHome)
+    TeamAway <- filter(master_data, TEAM == input$SimAway)
     #Expected number of possessions
-    EHomePoss <- (as.numeric(TeamHomeFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
-    EAwayPoss <- (as.numeric(TeamAwayFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
+    EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
+    EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
     #Expected effective field goal percentage
     EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
     EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100
@@ -378,13 +367,11 @@ server <- function(input, output) {
   })
   
   output$Probs <- renderPrint({
-    TeamHome <- filter(NCAABTData, TEAM == input$SimHome)
-    TeamAway <- filter(NCAABTData, TEAM == input$SimAway)
-    TeamHomeFGAPG <- filter(FGAPG, Team == input$SimHome)
-    TeamAwayFGAPG <- filter(FGAPG, Team == input$SimAway)
+    TeamHome <- filter(master_data, TEAM == input$SimHome)
+    TeamAway <- filter(master_data, TEAM == input$SimAway)
     #Expected number of possessions
-    EHomePoss <- (as.numeric(TeamHomeFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
-    EAwayPoss <- (as.numeric(TeamAwayFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
+    EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
+    EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
     #Expected effective field goal percentage
     EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
     EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100
@@ -446,13 +433,11 @@ server <- function(input, output) {
   })
   
   Sim <- eventReactive(input$SimButton, {
-    TeamHome <- filter(NCAABTData, TEAM == input$SimHome)
-    TeamAway <- filter(NCAABTData, TEAM == input$SimAway)
-    TeamHomeFGAPG <- filter(FGAPG, Team == input$SimHome)
-    TeamAwayFGAPG <- filter(FGAPG, Team == input$SimAway)
+    TeamHome <- filter(master_data, TEAM == input$SimHome)
+    TeamAway <- filter(master_data, TEAM == input$SimAway)
     #Expected number of possessions
-    EHomePoss <- (as.numeric(TeamHomeFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
-    EAwayPoss <- (as.numeric(TeamAwayFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
+    EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
+    EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
     #Expected effective field goal percentage
     EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
     EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100
@@ -492,13 +477,11 @@ server <- function(input, output) {
   })
   
   output$SimScore <- renderPrint({
-    TeamHome <- filter(NCAABTData, TEAM == input$SimHome)
-    TeamAway <- filter(NCAABTData, TEAM == input$SimAway)
-    TeamHomeFGAPG <- filter(FGAPG, Team == input$SimHome)
-    TeamAwayFGAPG <- filter(FGAPG, Team == input$SimAway)
+    TeamHome <- filter(master_data, TEAM == input$SimHome)
+    TeamAway <- filter(master_data, TEAM == input$SimAway)
     #Expected number of possessions
-    EHomePoss <- (as.numeric(TeamHomeFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
-    EAwayPoss <- (as.numeric(TeamAwayFGAPG[,2])*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
+    EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
+    EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
     #Expected effective field goal percentage
     EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
     EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100

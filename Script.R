@@ -58,7 +58,7 @@ ExactDataScrapeBT <- function(year){
   
   return(ExactCurrentYearData)
 }
-ExactCurrentYearData <- ExactDataScrapeBT(yr)
+#ExactCurrentYearData <- ExactDataScrapeBT(yr)
 
 
 #Chance of Team A beating Team B
@@ -204,7 +204,21 @@ Add_to_JSON <- function(JSONDataSet, year){
 #Example use
 #Add_to_JSON(ExactCurrentYearData,2021)
 
-BTData <- Add_to_JSON(ExactCurrentYearData,yr)
+#BTData <- Add_to_JSON(ExactDataScrapeBT(yr),yr)
+
+
+#Function to add any of the stats from team rankings to the dataset
+add_stats <- function(dataset,stats_to_add, yr){
+  for(stat in stats_to_add){
+    stat_dataset <- TeamRankingsStatPull(stat,yr)
+    output_dataset <- cbind(dataset, stat_dataset[match(dataset$TEAM,stat_dataset$Team),][,2])
+    names(output_dataset)[length(names(output_dataset))] <- stat 
+  }
+  return(output_dataset)
+}
+
+master_data <- add_stats(Add_to_JSON(ExactDataScrapeBT(yr),yr), "FGA/G", yr)
+
 
 #Single row dataset of the NCAA averages for the current year
 #Function to create a single row dataset of the NCAA averages for the current year
@@ -225,6 +239,11 @@ NCAA_Row <- function(dataset){
   
 }
 
-NCAA <- NCAA_Row(BTData)
+NCAA <- NCAA_Row(master_data)
+
+
+#Add NCAA data to the master dataset
+master_data <- rbind(master_data, NCAA)
+
 
 
