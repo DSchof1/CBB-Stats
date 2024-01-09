@@ -1,7 +1,5 @@
 ---
 title: "Binomial Methodology"
-#author: "Devan Scholefield"
-#date: "14/06/2023"
 output: html_document
 ---
 

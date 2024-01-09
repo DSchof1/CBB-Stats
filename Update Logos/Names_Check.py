@@ -1,5 +1,3 @@
-#Author: Devan Scholefield
-
 import pandas as pd
 import httpx
 from bs4 import BeautifulSoup

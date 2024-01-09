@@ -1,5 +1,3 @@
-#Author: Devan Scholefield
-
 library(reticulate)
 
 virtualenv_create(envname = "python3_env", python = "python3")

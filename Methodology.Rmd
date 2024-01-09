@@ -1,7 +1,5 @@
 ---
 title: "Methodology"
-#author: "Devan Scholefield"
-#date: "10/03/2021"
 output: html_document
 ---
 
