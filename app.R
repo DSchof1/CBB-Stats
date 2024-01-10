@@ -1,4 +1,3 @@
-#Author: Devan Scholefield
 source("Script.R")
 library(shiny)
 library(shinydashboard)
@@ -179,16 +178,22 @@ server <- function(input, output) {
   shinyalert(title = "Updates as of November 2023!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = tagList(
-               tags$h4("Welcome to the 2023/2024 College Basketball Season!"),
-               tags$li(style = "text-align: left;","Data has been updated for the new season!"),
-               tags$h4("What's New"),
-               tags$li(style = "text-align: left;", "All logos have been updated using a new method to pull them"),
-               tags$li(style = "text-align: left;", "The Simulation page has been moved to be the default landing page"),
-               tags$li(style = "text-align: left;","A methodology section has been added to explain the math behind the simulation"),
-               tags$h4("What's Coming"),
-               tags$li(style = "text-align: left;", "A big overhaul of the methodology sections is being worked on to make them more readable"),
-               tags$li(style = "text-align: left;", "Some small corrections to the probabilities in the simulation charts")),
+             text = paste0("<h4>Welcome to the 2023/2024 College Basketball Season!</h4>
+             <br>
+             <li>Data has been updated for the new season!</li>
+             <br>
+             <h4>What’s New</h4><br>
+              <ul style='text-align:left;'>
+                <li>All logos have been updated using a new method to pull them</li>
+                <li>The Simulation page has been moved to be the default landing page</li>
+                <li>A methodology section has been added to explain the math behind the simulation</li>
+              </ul>
+              <h4>What's Coming</h4>
+              <ul style='text-align:left;'>
+                <li>A schedule is currently being worked on with pertinent info for games not yet played</li>
+                <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
+              </ul>
+              "),
              className = "landing_popup")
   
   
