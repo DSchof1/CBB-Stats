@@ -13,18 +13,18 @@ output: html_document
 
 <h4> A New Method </h4>
 
-<div style="text-align:justify;"> Just before the March Madness tournament in the spring of 2021 I had an epiphany about the game of basketball that will sound rather trivial at first. Each time a team has the ball there are only two possible outcomes, they either score or don’t score. This is classically modelled by a binomial distribution as there are only two outcomes with probability of success \\(p\\) and probability of failure \\(1-p\\). In order to model this we need to know what the probability of success per trip is for a given team. Thankfully this is a metric that is actually tracked and rather easy to compute. Effective Field Goal Percentage (eFG %) is a measure of how successful a team is from the field. It is better than traditional FG % because it incorporates both 2-point FGs and 3-point FGs and adjusts for the extra point for a 3-point basket. It is calculated using the following formula: </div>
+<div style="text-align:justify;"> Just before the March Madness tournament in the spring of 2021 I had an epiphany about the game of basketball that will sound rather trivial at first. Each time a team has the ball there are only two possible outcomes, they either score or don’t score. This is classically modelled by a binomial distribution as there are only two outcomes with probability of success \(p\) and probability of failure \(1-p\). In order to model this we need to know what the probability of success per trip is for a given team. Thankfully this is a metric that is actually tracked and rather easy to compute. Effective Field Goal Percentage (eFG %) is a measure of how successful a team is from the field. It is better than traditional FG % because it incorporates both 2-point FGs and 3-point FGs and adjusts for the extra point for a 3-point basket. It is calculated using the following formula: </div>
 
 &nbsp;
 
-<div align="center"> $$\text{eFG %} = \frac{\text{FG} + (0.5 \cdot \text{3P})}{\text{FGA}}$$</div>
+<div align="center"> \[\text{eFG %} = \frac{\text{FG} + (0.5 \cdot \text{3P})}{\text{FGA}}\]</div>
 
 where:
 
 <ul>
-  <li>\\(\text{FG} =\\) Field Goals Made</li>
-  <li>\\(\text{3P} =\\) 3-Pointers Made</li>
-  <li>\\(\text{FGA} =\\) Field Goals Attempted</li>
+  <li>\(\text{FG} =\) Field Goals Made</li>
+  <li>\(\text{3P} =\) 3-Pointers Made</li>
+  <li>\(\text{FGA} =\) Field Goals Attempted</li>
 </ul>
 
 <div style="text-align:justify;"> Most critically this equation is free from tempo. It is independent of how many possessions a team has per game. However it doesn’t account for how good an opposing team’s defence is. Later this will be taken into account.  </div>
@@ -37,14 +37,14 @@ where:
 
 &nbsp;
 
-<div align="center"> $$E(\text{FGA}_{A})=\text{FGA}_{A} \cdot \frac{E(\text{Tempo}_{A,B})}{\text{AdjTempo}_{A}}$$</div>
+<div align="center"> \[E(\text{FGA}_{A})=\text{FGA}_{A} \cdot \frac{E(\text{Tempo}_{A,B})}{\text{AdjTempo}_{A}}\]</div>
 
 where:
 
 <ul>
-  <li>\\(\text{FGA}_{A} =\\) Average Field Goals Attempted by team A per game</li>
-  <li>\\(E(\text{Tempo}_{AB}) =\\) Expected Tempo of a game played between team A and team B</li>
-  <li>\\(\text{AdjTempo}_A =\\) Adjusted Tempo of team A</li>
+  <li>\(\text{FGA}_{A} =\) Average Field Goals Attempted by team A per game</li>
+  <li>\(E(\text{Tempo}_{AB}) =\) Expected Tempo of a game played between team A and team B</li>
+  <li>\(\text{AdjTempo}_A =\) Adjusted Tempo of team A</li>
 </ul>
 
 &nbsp;
@@ -55,15 +55,15 @@ where:
 
 &nbsp;
 
-<div align="center"> $$E(\text{Tempo}_{A,B}) = \frac{\text{AdjT}_A}{\text{AdjT}_{\text{NCAA}}} \cdot \frac{\text{AdjT}_B}{\text{AdjT}_{\text{NCAA}}} \cdot \text{AdjT}_{\text{NCAA}}$$ </div>
+<div align="center"> \[E(\text{Tempo}_{A,B}) = \frac{\text{AdjT}_A}{\text{AdjT}_{\text{NCAA}}} \cdot \frac{\text{AdjT}_B}{\text{AdjT}_{\text{NCAA}}} \cdot \text{AdjT}_{\text{NCAA}}\] </div>
 
 where:
 
 <ul>
-  <li>\\(E(\text{Tempo}_{A,B}) =\\) The expected number of possessions that team and A and B will each have</li>
-  <li>\\(E(\text{AdjT}_{A}) =\\) The adjusted number of possessions team A has in a game</li>
-  <li>\\(E(\text{AdjT}_{B}) =\\) The adjusted number of possessions team B has in a game</li>
-  <li>\\(\text{AdjT}_{NCAA} =\\) The adjusted number of possessions the average NCAA Division 1 team has in a game</li>
+  <li>\(E(\text{Tempo}_{A,B}) =\) The expected number of possessions that team and A and B will each have</li>
+  <li>\(E(\text{AdjT}_{A}) =\) The adjusted number of possessions team A has in a game</li>
+  <li>\(E(\text{AdjT}_{B}) =\) The adjusted number of possessions team B has in a game</li>
+  <li>\(\text{AdjT}_{NCAA} =\) The adjusted number of possessions the average NCAA Division 1 team has in a game</li>
 </ul>
 
 &nbsp;
@@ -74,16 +74,16 @@ where:
 
 &nbsp;
 
-<div align="center"> $$E\text{(eFGO)}_{A} = \frac{\text{eFGO}_{A}}{\text{eFGO}_{\text{NCAA}}} \cdot \frac{\text{eFGD}_B}{\text{eFGD}_{\text{NCAA}}} \cdot \text{eFGO}_A \cdot \frac{1}{100}$$ </div>
+<div align="center"> \[E\text{(eFGO)}_{A} = \frac{\text{eFGO}_{A}}{\text{eFGO}_{\text{NCAA}}} \cdot \frac{\text{eFGD}_B}{\text{eFGD}_{\text{NCAA}}} \cdot \text{eFGO}_A \cdot \frac{1}{100}\] </div>
 
 where:
 
 <ul>
-  <li>\\(E(\text{eFGO)}_{A} =\\) The expected eFG % of team A against team B</li>
-  <li>\\(\text{eFGO}_A =\\) The eFG % of team A</li>
-  <li>\\(\text{eFGO}_{NCAA} =\\) The NCAA average eFG %</li>
-  <li>\\(\text{eFGD}_{B} =\\) The eFG % that team B’s defence keeps opposing offences to</li>
-  <li>\\(\text{eFGD}_{NCAA} =\\) The NCAA average eFG % that defences keep opposing offences to</li>
+  <li>\(E(\text{eFGO)}_{A} =\) The expected eFG % of team A against team B</li>
+  <li>\(\text{eFGO}_A =\) The eFG % of team A</li>
+  <li>\(\text{eFGO}_{NCAA} =\) The NCAA average eFG %</li>
+  <li>\(\text{eFGD}_{B} =\) The eFG % that team B’s defence keeps opposing offences to</li>
+  <li>\(\text{eFGD}_{NCAA} =\) The NCAA average eFG % that defences keep opposing offences to</li>
   <li> Note that raw data comes in percentage form, which is divided by 100 to convert it to decimal form </li>
 </ul>
 
@@ -95,22 +95,22 @@ where:
 
 &nbsp;
 
- <div align="center"> $$\text{OE}_{GA} = \frac{\text{PPP}_O}{\frac{\text{OAdjDE}}{\text{PPP}_{\text{NCAA}}}} ~ ~ ~ ~ ~ \text{DE}_{GA} = \frac{\text{PPP}_D}{\frac{\text{OAdjOE}}{\text{PPP}_{\text{NCAA}}}}$$</div>
+ <div align="center"> \[\text{OE}_{GA} = \frac{\text{PPP}_O}{\frac{\text{OAdjDE}}{\text{PPP}_{\text{NCAA}}}} ~ ~ ~ ~ ~ \text{DE}_{GA} = \frac{\text{PPP}_D}{\frac{\text{OAdjOE}}{\text{PPP}_{\text{NCAA}}}}\]</div>
  
  where:
  
 <ul>
-  <li>\\(\text{OE}_{GA} =\\) Game Adjusted Offensive Efficiency</li>
-  <li>\\(\text{DE}_{GA} =\\) Game Adjusted Defensive Efficiency</li>
-  <li>\\(\text{PPP}_{O} =\\) Points Scored Per Possession on Offense</li>
-  <li>\\(\text{PPP}_{D} =\\) Points Allowed Per Possession on Defense</li>
-  <li>\\(\text{PPP}_{NCAA} =\\) NCAA Average Points Per Possession</li>
-  <li>\\(\text{eFGO}_{NCAA} =\\) The NCAA average eFG %</li>
-  <li>\\(\text{OAdjOE} =\\) Opponent's Adjusted Offensive Efficiency</li>
-  <li>\\(\text{OAdjDE} =\\) Opponent's Adjusted Defensive Efficiency</li>
+  <li>\(\text{OE}_{GA} =\) Game Adjusted Offensive Efficiency</li>
+  <li>\(\text{DE}_{GA} =\) Game Adjusted Defensive Efficiency</li>
+  <li>\(\text{PPP}_{O} =\) Points Scored Per Possession on Offense</li>
+  <li>\(\text{PPP}_{D} =\) Points Allowed Per Possession on Defense</li>
+  <li>\(\text{PPP}_{NCAA} =\) NCAA Average Points Per Possession</li>
+  <li>\(\text{eFGO}_{NCAA} =\) The NCAA average eFG %</li>
+  <li>\(\text{OAdjOE} =\) Opponent's Adjusted Offensive Efficiency</li>
+  <li>\(\text{OAdjDE} =\) Opponent's Adjusted Defensive Efficiency</li>
 </ul>
 
-<div style="text-align:justify;"> Once averaged out for all games a team plays the adjusted offensive and defensive efficiencies are given by \\(\text{AdjOE}\\) and \\(\text{AdjDE}\\) </div>
+<div style="text-align:justify;"> Once averaged out for all games a team plays the adjusted offensive and defensive efficiencies are given by \(\text{AdjOE}\) and \(\text{AdjDE}\) </div>
 
 &nbsp;
 
@@ -120,16 +120,16 @@ where:
 
 &nbsp;
 
-<div align="center"> $$\text{E(points)}_A = \frac{\text{AdjOE}_A \cdot \text{AdjDE}_B \cdot \text{E(Tempo)}_{A,B}}{\text{AdjDE}_{\text{NCAA}}} \cdot \frac{1}{100}$$ </div>
+<div align="center"> \[\text{E(points)}_A = \frac{\text{AdjOE}_A \cdot \text{AdjDE}_B \cdot \text{E(Tempo)}_{A,B}}{\text{AdjDE}_{\text{NCAA}}} \cdot \frac{1}{100}\] </div>
 
 where:
 
 <ul>
-  <li>\\(\text{AdjOE}_A =\\) Adjusted Offensive Efficiency of team A</li>
-  <li>\\(\text{AdjDE}_B =\\) Adjusted Defensive Efficiency of team B</li>
-  <li>\\(\text{E(Tempo)}_{A,B} =\\) The expected number of possessions that team and A and B will each have</li>
-  <li>\\(\text{AdjDE}_{\text{NCAA}} =\\) Adjusted Defensive Efficiency of the average NCAA Division 1 team</li>
-  <li>Note \\(E(Tempo)_{A,B}\\) is divided by 100 because tempo is generally expressed as points per 100 possessions, therefore we divide by 100 to find points per single possession.</li>
+  <li>\(\text{AdjOE}_A =\) Adjusted Offensive Efficiency of team A</li>
+  <li>\(\text{AdjDE}_B =\) Adjusted Defensive Efficiency of team B</li>
+  <li>\(\text{E(Tempo)}_{A,B} =\) The expected number of possessions that team and A and B will each have</li>
+  <li>\(\text{AdjDE}_{\text{NCAA}} =\) Adjusted Defensive Efficiency of the average NCAA Division 1 team</li>
+  <li>Note \(E(Tempo)_{A,B}\) is divided by 100 because tempo is generally expressed as points per 100 possessions, therefore we divide by 100 to find points per single possession.</li>
 </ul>
 
 &nbsp;
@@ -140,26 +140,26 @@ where:
 
 &nbsp;
 
-<div align="center"> $$\sigma^2 = np(1-p)$$</div>
+<div align="center"> \[\sigma^2 = np(1-p)\]</div>
 
 where:
 
 <ul>
-  <li>\\(n =\\) The number of trials (Field Goals Attempted)</li>
-  <li>\\(p =\\) The probability of success (Effective Field Goal Percentage)</li>
+  <li>\(n =\) The number of trials (Field Goals Attempted)</li>
+  <li>\(p =\) The probability of success (Effective Field Goal Percentage)</li>
 </ul>
 
 <div style="text-align:justify;"> Now we just need to plugin the expressions we determined above into this variance formula. The variance of the points scored by team A against team B is given by: </div>
 
 &nbsp;
 
-<div align="center"> $$\text{Var}(\text{points}_A) = E(\text{FGA}_A) \cdot E(\text{eFGO}_A)(1- \text{eFGO}_A) \cdot 2$$ </div>
+<div align="center"> \[\text{Var}(\text{points}_A) = E(\text{FGA}_A) \cdot E(\text{eFGO}_A)(1- \text{eFGO}_A) \cdot 2\] </div>
 
 where:
 
 <ul>
-  <li>\\(E(\text{FGA}_A) =\\) The expected FGA of team A against team B</li>
-  <li>\\(E(\text{eFGO}_A) =\\) The expected eFG % team A will have against team B</li>
+  <li>\(E(\text{FGA}_A) =\) The expected FGA of team A against team B</li>
+  <li>\(E(\text{eFGO}_A) =\) The expected eFG % team A will have against team B</li>
   <li>Note: Since eFG adjusts for 3-pointers we need to multiply by 2 because one “basket” is considered to be worth 2 points</li>
 </ul>
 
@@ -179,13 +179,13 @@ where:
 
 <h4> COVID and Home Court Advantage </h4>
 
-<div style="text-align:justify;"> For the entire 2020-2021 season there were either no fans in attendance or a severely restricted amount. Fans surely have an impact on the multiplier for home court advantage. Therefore without them the multiplier has to be lower. The multiplier in this model has been set to 1% to account for this change. While this change was implemented for the 2020-2021 season it has performed reasonably well as fans have been permitted back into arenas at full capacity. </div>
+<div style="text-align:justify;"> For the entire 2020/2021 season there were either no fans in attendance or a severely restricted amount. Fans surely have an impact on the multiplier for home court advantage. Therefore without them the multiplier had to be lower. The multiplier in this model has been set to 1% to account for this change. While this change was implemented for the 2020/2021 season it has performed reasonably well as fans have been permitted back into arenas at full capacity. </div>
 
 &nbsp;
 
 <h4> Simulation </h4>
 
-<div style="text-align:justify;"> Once efficiencies have been adjusted for home court advantage we calculate the mean and variance of the binomial distribution for the points team A will score against team B. We can do the exact same thing for team B against team A. We now have two unique binomial distributions, one for team A and one for team B. Thus, we can get the probability of a random point on distribution A being higher than a random point on distribution B. This is the probability that team A beats team B. In a similar way we can see what the expected point spread is by taking the difference between \\(E(\text{points}_A)\\) and \\(E(\text{points}_B)\\). Finally a game can be simulated by sampling a random point on the distribution for team A and a random point on the distribution for team B. </div>
+<div style="text-align:justify;"> Once efficiencies have been adjusted for home court advantage we calculate the mean and variance of the binomial distribution for the points team A will score against team B. We can do the exact same thing for team B against team A. We now have two unique binomial distributions, one for team A and one for team B. Thus, we can get the probability of a random point on distribution A being higher than a random point on distribution B. This is the probability that team A beats team B. In a similar way we can see what the expected point spread is by taking the difference between \(E(\text{points}_A)\) and \(E(\text{points}_B)\). Finally a game can be simulated by sampling a random point on the distribution for team A and a random point on the distribution for team B. </div>
 
 &nbsp;
 

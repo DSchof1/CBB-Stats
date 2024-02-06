@@ -41,7 +41,7 @@ I will attempt to simplify alot of it here, but [Bart Torvik](http://adamcwispor
 
 &nbsp;
 
-<div align="center"> $$p_{A,B} = \frac{p_A-(p_A \cdot p_B)}{p_A + p_B - 2(p_A \cdot p_B)}$$ </div>
+<div align="center"> \[p_{A,B} = \frac{p_A-(p_A \cdot p_B)}{p_A + p_B - 2(p_A \cdot p_B)}\] </div>
 
 &nbsp;
 
@@ -60,11 +60,11 @@ For college basketball the variables $p_A$ and $p_B$ represent:
 
 &nbsp;
 
-<div align="center"> $$OE_{GA} = \frac{PPP_O}{\frac{OAdjDE}{PPP_A}}$$ </div>
+<div align="center"> \[OE_{GA} = \frac{PPP_O}{\frac{OAdjDE}{PPP_A}}\] </div>
 
 &nbsp;
 
-<div align="center">$$DE_{GA} = \frac{PPP_D}{\frac{OAdjOE}{PPP_A}}$$ </div>
+<div align="center"> \[DE_{GA} = \frac{PPP_D}{\frac{OAdjOE}{PPP_A}}\] </div>
 
 Where:
 
@@ -82,7 +82,7 @@ Then for each team you average their game scores for Adjusted Offensive and Defe
 
 &nbsp;
 
-<div align="center"> $$ \text{Win Ratio} = \frac{1}{1+(\frac{AdjDE}{AdjOE})^{11.5}}$$ </div>
+<div align="center"> \[\text{Win Ratio} = \frac{1}{1+(\frac{AdjDE}{AdjOE})^{11.5}}\] </div>
 
 &nbsp;
 
@@ -107,7 +107,7 @@ Game scores rely on Adjusted Offensive and Defensive Efficiencies as well as Adj
 
 &nbsp;
 
-<div align="center"> $$E(Tempo_{A,B}) = \frac{AdjT_A}{AdjT_{NCAA}} \cdot \frac{AdjT_B}{AdjT_{NCAA}} \cdot AdjT_{NCAA}$$ </div>
+<div align="center"> \[E(Tempo_{A,B}) = \frac{AdjT_A}{AdjT_{NCAA}} \cdot \frac{AdjT_B}{AdjT_{NCAA}} \cdot AdjT_{NCAA}\] </div>
 
 &nbsp;
 
@@ -126,11 +126,11 @@ Now that we have the expected number of possessions team A and B will each have 
 
 &nbsp;
 
-<div align="center"> $$E(Points_A) = AdjOE_A \cdot \frac{AdjDE_B}{AdjDE_{NCAA}} \cdot \frac{E(Tempo_{A,B})}{100} \hspace{1px}$$ 
+<div align="center"> \[E(Points_A) = AdjOE_A \cdot \frac{AdjDE_B}{AdjDE_{NCAA}} \cdot \frac{E(Tempo_{A,B})}{100} \hspace{1px}\] 
 
 &nbsp;
 
-$$\hspace{1px} E(Points_B) = AdjOE_B \cdot \frac{AdjDE_A}{AdjDE_{NCAA}} \cdot \frac{E(Tempo_{A,B})}{100}$$ </div>
+$\hspace{1px} E(Points_B) = AdjOE_B \cdot \frac{AdjDE_A}{AdjDE_{NCAA}} \cdot \frac{E(Tempo_{A,B})}{100}$ </div>
 
 &nbsp;
 
@@ -167,15 +167,8 @@ Where:
 
 <h4>Is your multiplier 1.4%?</h4>
 
-<div style="text-align:justify;"> In short no.  This season teams either have no fans in attendance or a very limited number.  Fans surely have an impact on the multiplier for home-court advantage.  Therefore without them the multiplier has to be lower.  This is why I have set my multiplier to 1%.  While I determined this empirically I believe it to be a "good enough" approximation for this year when there are such differences due to COVID. </div>
+<div style="text-align:justify;"> In short no.  During the 2020/2021 season when I first started working on this project teams had either no fans in attendance or a very limited number.  Fans surely have an impact on the multiplier for home-court advantage.  Therefore without them the multiplier had to be lower.  This is why I set my multiplier to 1%.  While I determined this empirically I believed it to be a "good enough" approximation for the 2020/2021 season when there were such differences due to COVID. I have since left it at 1%, although that may change if I find the time to conduct a proper study.  </div>
 
-&nbsp;
-
-&nbsp;
-
-<h4>What is coming next?</h4>
-
-<div style="text-align:justify;"> I have plans to expand the matchup predictor to display "Today's Games" with the win probabilities and expected scores.  I may also include betting odds as I know some people are very interested in that.  I also have plans for conference and tournament brackets that allow you to fill them out with "weighted randomness".  Finally, I have plans to build a regression model to predict number of wins and see how it progresses over a season, but it's still in development and probably won't be seen until at the earliest next season. </div>
 
 &nbsp;
 
