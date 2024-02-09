@@ -1,12 +1,11 @@
-#Author: Devan Scholefield
-
-
 #You may have to install some of these packages
 #You can un-comment lines 7, 8, and 9 and run them if you'd like it to automatically check and install missing packages
 
 #list.of.packages <- c("data.table","tidyverse", "XML", "rvest", "stringr", "plotly", "janitor", "readxl", "shiny", "shinydashboard", "httr", "shinyalert")
 #new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 #if(length(new.packages)) install.packages(new.packages)
+
+source("year.R")
 
 library(data.table)
 library(tidyverse)
@@ -21,15 +20,15 @@ library(httr)
 library(rmarkdown)
 #library(RJSONIO)
 
-#set the year here for easy updating or running for previous years
-yr <- 2024
+
+yr <- champ_year
 
 
 set_config(config(ssl_verifypeer = FALSE))
 options(RCurlOptions = list(ssl_verifypeer = FALSE))
 options(rsconnect.check.certificate = FALSE)
 
-#Logos and team abbreviations Dataset
+#Logos and team names Dataset
 Logos <- read_excel("Logos.xlsx")
 
 #Using JSON data now, so this cleans it for use in R
