@@ -182,9 +182,8 @@ ui <- dashboardPage(
     align-items: center;
     justify-content: center;}
                 "),
-    tags$head(tags$style(HTML('/*body*/
-                                  .content-wrapper, .right-side {
-                                  background-color: #FFFFFF}')))
+    tags$head(tags$style(HTML("/*body*/.content-wrapper, .right-side {background-color: #FFFFFF}
+                              .content-wrapper { overflow: auto; }")))
   )
 )
 
