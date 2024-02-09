@@ -1,7 +1,10 @@
 #Download of Excel version of scheduled games and expected values
 
 library(openxlsx)
+<<<<<<< HEAD
 library(shinydashboard)
+=======
+>>>>>>> 5d9af77b7df6e1688676052680e6ba838e5281ed
 
 excel_download <- box(
   background = "light-blue",
