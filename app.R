@@ -1,4 +1,9 @@
 source("Script.R")
+source("Schedule For Date.R")
+source("Schedule Filler.R")
+source("excel_download.R")
+source("schedule_download_component.R")
+source("likely_dates_preload.R")
 library(shiny)
 library(shinydashboard)
 library(markdown)
@@ -10,6 +15,7 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Simulation", tabName = "simulation", icon = icon("server")),
+      menuItem("Schedule", tabName = "schedule", icon = icon("calendar")),
       menuItem("Simulation Methodology", tabName = "simulation_methodology", icon = icon("cogs")),
       menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt")),
       menuItem("Log5 Methodology", tabName= "log5_methodology", icon=icon("calculator"))
@@ -164,9 +170,18 @@ ui <- dashboardPage(
                               align="center")
               )
               
-      )
+      ),
+      tabItem(tabName ="schedule",
+              excel_download
+              )
     )
-    ,tags$style('.landing_popup .confirm {background-color: #2874A6 !important;}'),
+    ,tags$style(
+    ".landing_popup .confirm {background-color: #2874A6 !important;}
+    #excel_dl_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;}
+                "),
     tags$head(tags$style(HTML('/*body*/
                                   .content-wrapper, .right-side {
                                   background-color: #FFFFFF}')))
@@ -195,7 +210,22 @@ server <- function(input, output) {
               </ul>
               "),
              className = "landing_popup")
+
   
+  output$expected_excel_dl <- downloadHandler(
+    filename = function(){paste0(input$selected_date, ".xlsx")},
+    content = function(file){
+      if(input$selected_date %in% c(day0,day1,day2,day3,day4)){
+        match_index <- match(as.character(input$selected_date),c(day0,day1,day2,day3,day4))
+        dl_dataset <- list(day0_data,day1_data,day2_data,day3_data,day4_data)[match_index]
+        write.xlsx(dl_dataset, file = file, colNames=FALSE)
+      }
+      else{
+        write.xlsx(expected_excel_format(expected_values(schedule_builder(input$selected_date))), file = file, colNames=FALSE)
+      }
+    }
+  )
+
   
   output$imgAway <- renderUI({
     if (input$Away %in% Logos$TEAM){
