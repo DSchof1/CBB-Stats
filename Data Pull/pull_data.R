@@ -27,7 +27,7 @@ options(RCurlOptions = list(ssl_verifypeer = FALSE))
 options(rsconnect.check.certificate = FALSE)
 
 #Logos and team names Dataset
-Logos <- read_excel("Logos.xlsx")
+Logos <- read_excel("Data/Logos.xlsx")
 
 #Using JSON data now, so this cleans it for use in R
 #Due to a Lets Encrypt root certificate expiring the JSON method is now slightly deprecated and is adjusted here

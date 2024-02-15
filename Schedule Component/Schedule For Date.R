@@ -2,7 +2,7 @@ library(jsonlite)
 library(readxl)
 library(lubridate)
 
-Logos <- read_excel("Logos.xlsx")
+Logos <- read_excel("Data/Logos.xlsx")
 
 #Function to build schedule for a given date
 #Pass date in the format YYYY-MM-DD
