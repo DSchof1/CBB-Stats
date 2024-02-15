@@ -1,9 +1,10 @@
 source("Script.R")
-source("Schedule For Date.R")
-source("Schedule Filler.R")
-source("excel_download.R")
-source("schedule_download_component.R")
-source("likely_dates_preload.R")
+source("Schedule Component/Schedule For Date.R")
+source("Schedule Component/Schedule Filler.R")
+source("Schedule Component/excel_download.R")
+source("Schedule Component/schedule_download_component.R")
+source("Schedule Component/likely_dates_preload.R")
+source("Schedule Component/schedule_games_component.R")
 library(shiny)
 library(shinydashboard)
 library(markdown)
@@ -91,10 +92,10 @@ ui <- dashboardPage(
                                  font-style: bold;}")
       ),
       tabItem(tabName = "log5_methodology",
-              withMathJax(includeMarkdown("Methodology.Rmd"))
+              withMathJax(includeMarkdown("Methodologies/Methodology.Rmd"))
       ),
       tabItem(tabName = "simulation_methodology",
-              withMathJax(includeMarkdown("Binomial Methodology.Rmd"))
+              withMathJax(includeMarkdown("Methodologies/Binomial Methodology.Rmd"))
       ),
       tabItem(tabName ="simulation",
               fluidRow(
@@ -172,7 +173,8 @@ ui <- dashboardPage(
               
       ),
       tabItem(tabName ="schedule",
-              excel_download
+              excel_download,
+              htmlOutput(outputId = "sched_games")
               )
     )
     ,tags$style(
@@ -181,6 +183,9 @@ ui <- dashboardPage(
     display: flex;
     align-items: center;
     justify-content: center;}
+    #team_display_schedule {
+    display: flex;
+    align-items: center;}
                 "),
     tags$head(tags$style(HTML("/*body*/.content-wrapper, .right-side {background-color: #FFFFFF}
                               .content-wrapper { overflow: auto; }")))
@@ -193,35 +198,46 @@ server <- function(input, output) {
              closeOnClickOutside = TRUE,
              html = TRUE,
              text = paste0("<h4>Welcome to the 2023/2024 College Basketball Season!</h4>
-             <br>
-             <li>Data has been updated for the new season!</li>
-             <br>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>All logos have been updated using a new method to pull them</li>
-                <li>The Simulation page has been moved to be the default landing page</li>
-                <li>A methodology section has been added to explain the math behind the simulation</li>
+                <li>A brand new schedule page with data for upcoming games</li>
+                <li>The Schedule page has been moved to be the default landing page</li>
               </ul>
               <h4>What's Coming</h4>
               <ul style='text-align:left;'>
-                <li>A schedule is currently being worked on with pertinent info for games not yet played</li>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
               </ul>
               "),
              className = "landing_popup")
-
+  
+  output$sched_games <- renderUI({
+    schedule_display(schedule_game_data())
+  })
+  
+  schedule_game_data <- reactive({
+    if(input$selected_date %in% c(day0,day1,day2,day3,day4)){
+      dataset_for_schedule <- list(day0_data,day1_data,day2_data,day3_data,day4_data)[match(as.character(input$selected_date),c(day0,day1,day2,day3,day4))][[1]]
+    }
+    else{
+      dataset_for_schedule <- expected_values(schedule_builder(input$selected_date))
+    }
+    return(dataset_for_schedule)
+  })
+  
+  day_data_excel <- reactive({
+    if(input$selected_date %in% c(day0,day1,day2,day3,day4)){
+      dl_dataset <- list(day0_data_excel,day1_data_excel,day2_data_excel,day3_data_excel,day4_data_excel)[match(as.character(input$selected_date),c(day0,day1,day2,day3,day4))]
+    }
+    else{
+      dl_dataset <- expected_excel_format(expected_values(schedule_builder(input$selected_date)))
+    }
+    return(dl_dataset)
+  })
   
   output$expected_excel_dl <- downloadHandler(
     filename = function(){paste0(input$selected_date, ".xlsx")},
     content = function(file){
-      if(input$selected_date %in% c(day0,day1,day2,day3,day4)){
-        match_index <- match(as.character(input$selected_date),c(day0,day1,day2,day3,day4))
-        dl_dataset <- list(day0_data,day1_data,day2_data,day3_data,day4_data)[match_index]
-        write.xlsx(dl_dataset, file = file, colNames=FALSE)
-      }
-      else{
-        write.xlsx(expected_excel_format(expected_values(schedule_builder(input$selected_date))), file = file, colNames=FALSE)
-      }
+      write.xlsx(day_data_excel(), file = file, colNames=FALSE)
     }
   )
 

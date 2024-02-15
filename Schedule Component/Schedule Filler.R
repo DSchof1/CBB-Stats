@@ -1,4 +1,4 @@
-source("Schedule For Date.R")
+source("Schedule Component/Schedule For Date.R")
 library(dplyr)
 
 #Calculate expected game scores

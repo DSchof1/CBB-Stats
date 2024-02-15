@@ -24,16 +24,20 @@ schedule_builder <- function(game_date){
   else{
     api_call <- fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=357"))
     
-    for(i in 1:length(api_call$events$competitions)){
-      vec_to_add <- c(getElement(unlist(api_call$events$competitions[i]), "date"),
-                      getElement(unlist(api_call$events$competitions[i]), "neutralSite"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.team.location2"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.team.location1"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.team.logo2"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.team.logo1"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.score2"),
-                      getElement(unlist(api_call$events$competitions[i]), "competitors.score1"),
-                      getElement(unlist(api_call$events$competitions[i]), "status.type.name")
+    #Deal with TBDs
+    tbd_list <- api_call[["events"]][["name"]]
+    api_call <- api_call$events$competitions[match(tbd_list[tbd_list != "TBD TBD at TBD TBD"], tbd_list)]
+    
+    for(i in 1:length(api_call)){
+      vec_to_add <- c(getElement(unlist(api_call[i]), "date"),
+                      getElement(unlist(api_call[i]), "neutralSite"),
+                      getElement(unlist(api_call[i]), "competitors.team.location2"),
+                      getElement(unlist(api_call[i]), "competitors.team.location1"),
+                      getElement(unlist(api_call[i]), "competitors.team.logo2"),
+                      getElement(unlist(api_call[i]), "competitors.team.logo1"),
+                      getElement(unlist(api_call[i]), "competitors.score2"),
+                      getElement(unlist(api_call[i]), "competitors.score1"),
+                      getElement(unlist(api_call[i]), "status.type.name")
       )
       day_schedule <- rbind(day_schedule,vec_to_add)
     }
