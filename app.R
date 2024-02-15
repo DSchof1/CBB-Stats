@@ -15,8 +15,8 @@ ui <- dashboardPage(
   dashboardHeader(title = "NCAA Basketball Matchup Stats", titleWidth = 500),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Simulation", tabName = "simulation", icon = icon("server")),
       menuItem("Schedule", tabName = "schedule", icon = icon("calendar")),
+      menuItem("Simulation", tabName = "simulation", icon = icon("server")),
       menuItem("Simulation Methodology", tabName = "simulation_methodology", icon = icon("cogs")),
       menuItem("Matchup Utility", tabName = "dashboard", icon = icon("tachometer-alt")),
       menuItem("Log5 Methodology", tabName= "log5_methodology", icon=icon("calculator"))
@@ -206,6 +206,8 @@ server <- function(input, output) {
               <h4>What's Coming</h4>
               <ul style='text-align:left;'>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
+                <li>This once small app is growing!  Better organization is required behind the scenes</li>
+                <li>Stats for previously played games</li>
               </ul>
               "),
              className = "landing_popup")
