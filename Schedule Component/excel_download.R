@@ -2,6 +2,9 @@
 
 #Takes filled expected value dataframe as argument, returns nice format for excel
 expected_excel_format <- function(filled_schedule){
+  if(nrow(filled_schedule) == 0){
+    return(filled_schedule)
+  }
   output_df <- data.frame()
   filled_schedule$Date <- trimws(format(filled_schedule$Date, format = "%l:%M %p", tz="EST"))
   filled_schedule$`Away Win Probability` <- paste0(filled_schedule$`Away Win Probability`, "%")
