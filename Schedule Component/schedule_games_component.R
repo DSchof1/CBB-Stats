@@ -20,7 +20,7 @@ schedule_display <- function(schedule_dataset){
         status="danger",
         width = 12,
         fluidRow(
-          column(width = 1, trimws(format(schedule_dataset[,"Date"][i], format = "%l:%M %p", tz="EST")), align="center"),
+          column(width = 1, trimws(format(schedule_dataset[,"Date"][i], format = "%l:%M %p", tz="America/Toronto")), align="center"),
           column(width = 2, "Neutral Site", align = "center"),
           column(width = 3, "Win Percentage", align = "center"),
           column(width = 3, "Expected Score", align = "center"),
@@ -60,7 +60,7 @@ schedule_display <- function(schedule_dataset){
       games[[length(games)+1]] = box(
         width = 12,
         fluidRow(
-          column(width = 1, trimws(format(schedule_dataset[,"Date"][i], format = "%l:%M %p", tz="EST")), align="center"),
+          column(width = 1, trimws(format(schedule_dataset[,"Date"][i], format = "%l:%M %p", tz="America/Toronto")), align="center"),
           column(width = 2, "", align = "center"),
           column(width = 3, "Win Percentage", align = "center"),
           column(width = 3, "Expected Score", align = "center"),
