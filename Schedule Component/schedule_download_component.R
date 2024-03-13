@@ -17,7 +17,7 @@ excel_download <- box(
     column(8,
            dateInput(
              "selected_date",label = "Select Date",
-             value = as.Date(with_tz(Sys.time(),tzone = "EST")),
+             value = as.Date(with_tz(Sys.time(),tzone = "America/Toronto")),
              min = first_day_of_games,
              max = last_day_of_games,
              datesdisabled = exclude_dates
