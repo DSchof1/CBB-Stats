@@ -28,6 +28,15 @@ schedule_builder <- function(game_date){
     tbd_list <- api_call[["events"]][["name"]]
     api_call <- api_call$events$competitions[match(tbd_list[tbd_list != "TBD TBD at TBD TBD"], tbd_list)]
     
+    if(length(api_call) == 0){
+      day_schedule <- data.frame(X1=double(), X2=logical(), X3=character(), X4=character(),
+                                 X5=character(), X6=character(), X7=numeric(),
+                                 X8=numeric(), X9=character())
+      names(day_schedule) <- c("Date","Neutral Site","Away","Home","Away Logo","Home Logo","Away Score",
+                               "Home Score","Game Status")
+      return(day_schedule)
+    }
+    
     for(i in 1:length(api_call)){
       vec_to_add <- c(getElement(unlist(api_call[i]), "date"),
                       getElement(unlist(api_call[i]), "neutralSite"),
