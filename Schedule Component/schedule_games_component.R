@@ -2,6 +2,14 @@
 
 schedule_display <- function(schedule_dataset){
   games <- list()
+  
+  if(nrow(schedule_dataset) == 0){
+    games[[length(games)+1]] = fluidRow(
+      column(width = 12, "There are no scheduled games on this date.", align = "center")
+    )
+    return(games)
+  }
+  
   for(i in (1:nrow(schedule_dataset))){
     if(isTRUE(schedule_dataset[,"Neutral Site"][i])){
       if(schedule_dataset[,"Home Win Probability"][i] > schedule_dataset[,"Away Win Probability"][i]){

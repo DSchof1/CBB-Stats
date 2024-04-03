@@ -11,7 +11,7 @@ excel_download <- box(
   fluidRow(
     column(12,
            style="text-align: justify;",
-           "Please note game times are currently only in EST.  If you are downloading a day very far out it may take a few seconds to open the download dialog box as the data is only pre-loaded 4 days out.  This schedule may throw up an error, but only on days with no games, or no games yet scheduled. A fix is being worked on")
+           "Please note game times are currently only in EST.  If you are downloading a day very far out it may take a few seconds to open the download dialog box as the data is only pre-loaded 4 days out.")
   ),
   fluidRow(id = "excel_dl_button",
     column(8,

@@ -11,6 +11,7 @@ library(shinydashboard)
 library(markdown)
 library(rmarkdown)
 library(shinyalert)
+library(shinyjs)
 #library(shinydashboardPlus)
 
 ui <- dashboardPage(
@@ -25,6 +26,7 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
+    useShinyjs(),
     tabItems(
       tabItem(tabName = "dashboard",
               fluidRow(
@@ -218,6 +220,16 @@ server <- function(input, output) {
     schedule_display(schedule_game_data())
   })
   
+  observe({
+    input$selected_date
+    if(grepl("There are no scheduled games on this date.",schedule_display(schedule_game_data())[[1]], fixed = TRUE)){
+      disable(id = "expected_excel_dl")
+      }
+    else{
+      enable(id = "expected_excel_dl")
+      }
+  })
+  
   schedule_game_data <- reactive({
     if(input$selected_date %in% c(day0,day1,day2,day3,day4)){
       dataset_for_schedule <- list(day0_data,day1_data,day2_data,day3_data,day4_data)[match(as.character(input$selected_date),c(day0,day1,day2,day3,day4))][[1]]
@@ -244,7 +256,7 @@ server <- function(input, output) {
       write.xlsx(day_data_excel(), file = file, colNames=FALSE)
     }
   )
-
+  
   
   output$imgAway <- renderUI({
     if (input$Away %in% Logos$TEAM){
