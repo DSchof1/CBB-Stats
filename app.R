@@ -198,19 +198,18 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of November 2023!",
+  shinyalert(title = "Updates as of April 2024! - Offseason Edition",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Welcome to the 2023/2024 College Basketball Season!</h4>
+             text = paste0("<h4>Welcome to the Offseason :(</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>A brand new schedule page with data for upcoming games</li>
-                <li>The Schedule page has been moved to be the default landing page</li>
+                <li>The season has now concluded, congrats to UConn for winning back-to-back National Championships</li>
+                <li>Data and schedules will be updated when next season starts in November</li>
               </ul>
               <h4>What's Coming</h4>
               <ul style='text-align:left;'>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
-                <li>This once small app is growing!  Better organization is required behind the scenes</li>
                 <li>Stats for previously played games</li>
               </ul>
               "),
