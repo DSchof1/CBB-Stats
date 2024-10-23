@@ -6,7 +6,7 @@ virtualenv_install("python3_env", packages = c("bs4","httpx","openpyxl","pandas"
 
 source_python("Update Logos/Names_Check.py")
 
-#Assuming Script.R is sourced where the variable yr is set
+#Assuming pull_data.R is sourced where the variable yr is set
 #Otherwise any (reasonable) integer year can be given
 New_Logos <- updates(yr)
 
