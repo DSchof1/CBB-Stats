@@ -198,14 +198,14 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of April 2024! - Offseason Edition",
+  shinyalert(title = "Updates as of October 23rd 2024! - Preseason Edition",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Welcome to the Offseason :(</h4>
+             text = paste0("<h4>Welcome to the preseason :(</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>The season has now concluded, congrats to UConn for winning back-to-back National Championships</li>
-                <li>Data and schedules will be updated when next season starts in November</li>
+                <li>There were some team name changes that broke the app, these have been fixed</li>
+                <li>Data and schedules will be updated a week or two into the new season once there is enough data</li>
               </ul>
               <h4>What's Coming</h4>
               <ul style='text-align:left;'>
