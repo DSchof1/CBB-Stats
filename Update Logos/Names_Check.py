@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 
-logos_url = 'https://github.com/DSchof1/CBB-Stats/blob/master/Logos.xlsx?raw=true'
+logos_url = 'https://github.com/DSchof1/CBB-Stats/blob/master/Data/Logos.xlsx?raw=true'
 logos = pd.read_excel(logos_url)
 
 
