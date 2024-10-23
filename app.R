@@ -201,7 +201,7 @@ server <- function(input, output) {
   shinyalert(title = "Updates as of October 23rd 2024! - Preseason Edition",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Welcome to the preseason :(</h4>
+             text = paste0("<h4>Welcome to the preseason :)</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
                 <li>There were some team name changes that broke the app, these have been fixed</li>
