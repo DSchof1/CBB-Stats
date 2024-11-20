@@ -33,6 +33,7 @@ expected_values <- function(day_schedule){
     EAwayPoss <- (as.numeric(away_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/away_team$ADJ_T
     EHomeEFG <- ((home_team$EFG_O/NCAA$EFG_O)*(away_team$EFG_D/NCAA$EFG_D)*home_team$EFG_O)/100
     EAwayEFG <- ((away_team$EFG_O/NCAA$EFG_O)*(home_team$EFG_D/NCAA$EFG_D)*away_team$EFG_O)/100
+    
     HomeSD <- sqrt(EHomePoss*EHomeEFG*(1-EHomeEFG))*2
     AwaySD <- sqrt(EAwayPoss*EAwayEFG*(1-EAwayEFG))*2
     

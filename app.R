@@ -4,7 +4,7 @@ source("Schedule Component/Schedule For Date.R")
 source("Schedule Component/Schedule Filler.R")
 source("Schedule Component/excel_download.R")
 source("Schedule Component/schedule_download_component.R")
-#source("Schedule Component/likely_dates_preload.R")
+source("Schedule Component/likely_dates_preload.R")
 source("Schedule Component/schedule_games_component.R")
 library(shiny)
 library(shinydashboard)
@@ -198,16 +198,15 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of October 23rd 2024! - Preseason Edition",
+  shinyalert(title = "Updates as of Nov. 20th 2024!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Welcome to the preseason :)</h4>
+             text = paste0("<h4>Is it March yet?</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>There were some team name changes that broke the app, these have been fixed</li>
-                <li>Data and schedules will be updated a week or two into the new season once there is enough data</li>
+                <li>Data and schedules have been updated!</li>
               </ul>
-              <h4>What's Coming</h4>
+              <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
                 <li>Stats for previously played games</li>

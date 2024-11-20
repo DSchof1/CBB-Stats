@@ -1,5 +1,6 @@
 #Current season year (year when the championship will happen)
-champ_year <- 2024
-exclude_dates <- c("2023-12-25", "2023-12-26")
-first_day_of_games <- "2023-11-06"
-last_day_of_games <- "2024-04-08"
+champ_year <- 2025
+exclude_dates <- c("2024-12-26")
+first_day_of_games <- "2024-11-04"
+last_day_of_games <- "2025-04-07"
+offseason <- FALSE
