@@ -26,7 +26,7 @@ schedule_builder <- function(game_date){
     
     #Deal with TBDs
     tbd_list <- api_call[["events"]][["name"]]
-    api_call <- api_call$events$competitions[match(tbd_list[tbd_list != "TBD TBD at TBD TBD"], tbd_list)]
+    api_call <- api_call$events$competitions[match(tbd_list[!grepl("TBD", tbd_list)], tbd_list)]
     
     if(length(api_call) == 0){
       day_schedule <- data.frame(X1=double(), X2=logical(), X3=character(), X4=character(),
