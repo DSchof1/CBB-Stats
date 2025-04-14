@@ -198,16 +198,18 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of Nov. 20th 2024!",
+  shinyalert(title = "Updates as of April 14th 2025!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Is it March yet?</h4>
+             text = paste0("<h4>Post-Madness, We Sleep in May</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>Data and schedules have been updated!</li>
+                <li>Congrats to Florida on winning their 3rd National Championship!</li>
+                <li>Small changes under the hood for organization</li>
               </ul>
               <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
+                <li>Revision of the underlying math, as well as a new method that can work with preseason data before actual stats are available</li>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
                 <li>Stats for previously played games</li>
               </ul>

@@ -4,6 +4,12 @@ library(openxlsx)
 library(shinydashboard)
 source("Data/year.R")
 
+if(offseason){
+  most_recent_excel_dl_day <- as.Date(with_tz(last_day_of_games,tzone = "America/Toronto"))
+} else{
+  most_recent_excel_dl_day <- as.Date(with_tz(Sys.time(),tzone = "America/Toronto"))
+}
+
 
 excel_download <- box(
   background = "light-blue",
@@ -17,8 +23,7 @@ excel_download <- box(
     column(8,
            dateInput(
              "selected_date",label = "Select Date",
-             #value = as.Date(with_tz("2024-04-08",tzone = "America/Toronto")),
-             value = as.Date(with_tz(Sys.time(),tzone = "America/Toronto")),
+             value = most_recent_excel_dl_day,
              min = first_day_of_games,
              max = last_day_of_games,
              datesdisabled = exclude_dates
