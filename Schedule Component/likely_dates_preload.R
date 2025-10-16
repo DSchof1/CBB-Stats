@@ -1,6 +1,8 @@
 #Preload some datasets to save downloading time for impending game days
 
 source("Data/year.R")
+library(lubridate)
+
 if(offseason == TRUE & preseason == FALSE){
   day0 <- as.character(as.Date(last_year_last_day_of_games))
   day1 <- as.character(as.Date(last_year_last_day_of_games)+1)

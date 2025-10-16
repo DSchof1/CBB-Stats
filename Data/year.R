@@ -1,3 +1,5 @@
+library(lubridate)
+
 #Current season year (year when the championship will happen)
 champ_year <- 2026
 exclude_dates <- c("2025-12-24","2025-12-25","2025-12-26")
