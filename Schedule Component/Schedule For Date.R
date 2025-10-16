@@ -11,9 +11,9 @@ schedule_builder <- function(game_date){
   formatted_date <- gsub("-", "", as.character(game_date))
   day_schedule <- data.frame()
   
-  if(inherits(try(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=363")),
+  if(inherits(try(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366")),
                   silent = TRUE), "try-error") | 
-     is.null(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=363"))$events$competitions)){
+     is.null(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366"))$events$competitions)){
     day_schedule <- data.frame(X1=double(), X2=logical(), X3=character(), X4=character(),
                                X5=character(), X6=character(), X7=numeric(),
                                X8=numeric(), X9=character())
@@ -22,7 +22,7 @@ schedule_builder <- function(game_date){
     return(day_schedule)
   }
   else{
-    api_call <- fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=357"))
+    api_call <- fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366"))
     
     #Deal with TBDs
     tbd_list <- api_call[["events"]][["name"]]

@@ -29,13 +29,7 @@ expected_values <- function(day_schedule){
     
     away_team <- filter(master_data, TEAM == day_schedule$Away[game])
     home_team <- filter(master_data, TEAM == day_schedule$Home[game])
-    EHomePoss <- (as.numeric(home_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/home_team$ADJ_T
-    EAwayPoss <- (as.numeric(away_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/away_team$ADJ_T
-    EHomeEFG <- ((home_team$EFG_O/NCAA$EFG_O)*(away_team$EFG_D/NCAA$EFG_D)*home_team$EFG_O)/100
-    EAwayEFG <- ((away_team$EFG_O/NCAA$EFG_O)*(home_team$EFG_D/NCAA$EFG_D)*away_team$EFG_O)/100
     
-    HomeSD <- sqrt(EHomePoss*EHomeEFG*(1-EHomeEFG))*2
-    AwaySD <- sqrt(EAwayPoss*EAwayEFG*(1-EAwayEFG))*2
     
     if(isTRUE(day_schedule$`Neutral Site`[game])){
       EAwayScore <- GameScoreVS(away_team, home_team, NCAA)
@@ -46,11 +40,26 @@ expected_values <- function(day_schedule){
       EHomeScore <- GameScoreAtHomeTeam(home_team, away_team, NCAA)
     }
     
-    z_home <- pnorm((EHomeScore - EAwayScore)/(sqrt(HomeSD^2 + AwaySD^2)))
-    z_away <- pnorm((EAwayScore - EHomeScore)/(sqrt(HomeSD^2 + AwaySD^2)))
-    
-    day_schedule$`Away Win Probability`[game] <- round(z_away*100,2)
-    day_schedule$`Home Win Probability`[game] <- round(z_home*100,2)
+    if(as.Date(with_tz(Sys.time(),tzone = "EST")) > paste0((champ_year-1),"-12-15")){
+      EHomePoss <- (as.numeric(home_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/home_team$ADJ_T
+      EAwayPoss <- (as.numeric(away_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/away_team$ADJ_T
+      EHomeEFG <- ((home_team$EFG_O/NCAA$EFG_O)*(away_team$EFG_D/NCAA$EFG_D)*home_team$EFG_O)/100
+      EAwayEFG <- ((away_team$EFG_O/NCAA$EFG_O)*(home_team$EFG_D/NCAA$EFG_D)*away_team$EFG_O)/100
+      
+      HomeSD <- sqrt(EHomePoss*EHomeEFG*(1-EHomeEFG))*2
+      AwaySD <- sqrt(EAwayPoss*EAwayEFG*(1-EAwayEFG))*2
+      
+      z_home <- pnorm((EHomeScore - EAwayScore)/(sqrt(HomeSD^2 + AwaySD^2)))
+      z_away <- pnorm((EAwayScore - EHomeScore)/(sqrt(HomeSD^2 + AwaySD^2)))
+      day_schedule$`Away Win Probability`[game] <- round(z_away*100,2)
+      day_schedule$`Home Win Probability`[game] <- round(z_home*100,2)
+    }
+    else{
+      day_schedule$`Home Win Probability`[game] <- round((pnorm(0,mean = (EHomeScore - EAwayScore), sd = 11, lower.tail = FALSE))*100,2)
+      day_schedule$`Away Win Probability`[game] <- round((pnorm(0,mean = (EHomeScore - EAwayScore), sd = 11, lower.tail = TRUE))*100,2)
+    }
+
+
     day_schedule$`Away Expected Score`[game] <- EAwayScore
     day_schedule$`Home Expected Score`[game] <- EHomeScore
     day_schedule$`Home Team Spread`[game] <- day_schedule$`Away Expected Score`[game] - day_schedule$`Home Expected Score`[game]

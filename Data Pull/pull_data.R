@@ -152,6 +152,14 @@ Add_to_JSON <- function(JSONDataSet, year){
   
   FullData <- FullData %>% select(-contains(c("rank","Rank","Rk")))
   
+  missing_teams <- JSONDataSet[!(JSONDataSet$TEAM %in% FullData$TEAM),]
+  if(nrow(missing_teams) > 0){
+    missing_teams[c("EFG_O","EFG_D","TOR","TORD","ORB","DRB")] <- NA
+    missing_teams <- missing_teams %>% select(-contains(c("rank","Rank","Rk")))
+    FullData <- rbind(FullData, missing_teams)
+  }
+
+  
   return(FullData)
   
 }
@@ -166,8 +174,10 @@ add_stats <- function(dataset,stats_to_add, yr){
   for(stat in stats_to_add){
     stat_dataset <- TeamRankingsStatPull(stat,yr)
     output_dataset <- cbind(dataset, stat_dataset[match(dataset$TEAM,stat_dataset$Team),][,2])
-    names(output_dataset)[length(names(output_dataset))] <- stat 
+    names(output_dataset)[length(names(output_dataset))] <- stat
   }
+  
+  
   return(output_dataset)
 }
 

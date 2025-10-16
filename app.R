@@ -198,20 +198,21 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of April 14th 2025!",
+  shinyalert(title = "Updates as of October 16th 2025!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>Post-Madness, We Sleep in May</h4>
+             text = paste0("<h4>A New Season Begins</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>Congrats to Florida on winning their 3rd National Championship!</li>
-                <li>Small changes under the hood for organization</li>
+                <li>Preseason data is now workable, the app should be fully functional from the very start of the season</li>
+                <li>New season data will start displaying Oct. 20th</li>
+                <li>Addition of new D1 team New Haven, no new logos for anyone</li>
               </ul>
               <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
-                <li>Revision of the underlying math, as well as a new method that can work with preseason data before actual stats are available</li>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
                 <li>Stats for previously played games</li>
+                <li>Dark Mode?</li>
               </ul>
               "),
              className = "landing_popup")
@@ -378,15 +379,24 @@ server <- function(input, output) {
     
     TeamHome <- filter(master_data, TEAM == input$SimHome)
     TeamAway <- filter(master_data, TEAM == input$SimAway)
-    #Expected number of possessions
-    EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
-    EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
-    #Expected effective field goal percentage
-    EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
-    EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100
-    #Standard deviation of expected points scored against opponent
-    HomeSD <- sqrt(EHomePoss*EHomeEFG*(1-EHomeEFG))*2
-    AwaySD <- sqrt(EAwayPoss*EAwayEFG*(1-EAwayEFG))*2
+    
+    if(as.Date(with_tz(Sys.time(),tzone = "EST")) > paste0((champ_year-1),"-12-15")){
+      #Expected number of FG attempts
+      EHomePoss <- (as.numeric(TeamHome$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamHome$ADJ_T
+      EAwayPoss <- (as.numeric(TeamAway$`FGA/G`)*(ExpTempo(TeamHome, TeamAway, NCAA)))/TeamAway$ADJ_T
+      #Expected effective field goal percentage
+      EHomeEFG <- ((TeamHome$EFG_O/NCAA$EFG_O)*(TeamAway$EFG_D/NCAA$EFG_D)*TeamHome$EFG_O)/100
+      EAwayEFG <- ((TeamAway$EFG_O/NCAA$EFG_O)*(TeamHome$EFG_D/NCAA$EFG_D)*TeamAway$EFG_O)/100
+      #Standard deviation of expected points scored against opponent
+      HomeSD <- sqrt(EHomePoss*EHomeEFG*(1-EHomeEFG))*2
+      AwaySD <- sqrt(EAwayPoss*EAwayEFG*(1-EAwayEFG))*2
+    }
+    else{
+      
+      HomeSD <- 11
+      AwaySD <- 11
+    }
+
     
     if(input$Simvsat == "vs"){
       #Expected (mean) scores
