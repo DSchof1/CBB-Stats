@@ -187,19 +187,28 @@ master_data <- add_stats(Add_to_JSON(ExactDataScrapeBT(yr),yr), "FGA/G", yr)
 #Single row dataset of the NCAA averages for the current year
 #Function to create a single row dataset of the NCAA averages for the current year
 NCAA_Row <- function(dataset){
-  NCAA <- dataset %>% summarise_if(is.numeric, mean, na.rm = TRUE)
-  NCAA <- mutate(NCAA, "TEAM" = "NCAA")
-  #NCAA <- relocate(NCAA, TEAM)
+  all_cols <- names(dataset)
+  numeric_cols <- names(select(dataset, where(is.numeric)))
+  non_numeric_cols <- setdiff(all_cols, numeric_cols)
   
-  #Barthag can take a value between 0 and 1
+  means_df <- dataset %>%
+    summarise(across(all_of(numeric_cols), ~ mean(.x, na.rm = TRUE)))
   
-  NCAA$conf <- "NCAA"
-  NCAA$record <- NA
-  NCAA$`Con Rec.` <- NA
+  nas_df <- as.data.frame(lapply(dataset[non_numeric_cols], function(x) NA))
   
-  NCAA <- NCAA[names(dataset)]
+  bound_cols <- bind_cols(means_df, nas_df)
   
-  return(NCAA)
+  names(bound_cols)[names(bound_cols) == 'Con.Rec.'] <- 'Con Rec.'
+  names(bound_cols)[names(bound_cols) == 'FGA.G'] <- 'FGA/G'
+  
+  result_row <- bound_cols %>%
+    select(all_of(all_cols))
+  
+  result_row$TEAM <- "NCAA"
+  result_row$conf <- "NCAA"
+  
+  return(result_row)
+
   
 }
 
