@@ -261,42 +261,78 @@ server <- function(input, output) {
   
   
   output$imgAway <- renderUI({
-    if (input$Away %in% Logos$TEAM){
-      TeamLogoAway <- subset(Logos, input$Away == Logos$TEAM)
-      img(src = TeamLogoAway$LOGO, height="50%", width="50%") 
+    req(input$Away)
+    team_name <- gsub("[^A-Za-z0-9 ]", "", input$Away)
+    logo_file <- paste0("Logos/", team_name, "/logo.png")
+    if (file.exists(file.path("www", logo_file))) {
+      tags$img(
+        src = logo_file,
+        height="50%",
+        width="50%")
     }
     else{
-      img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
+      tags$img(
+        src="Logos/NCAA/logo.png",
+        height="50%",
+        width="50%"
+      )
     }
   })
   
   output$SimimgAway <- renderUI({
-    if (input$SimAway %in% Logos$TEAM){
-      TeamLogoSimAway <- subset(Logos, input$SimAway == Logos$TEAM)
-      img(src = TeamLogoSimAway$LOGO, height="50%", width="50%") 
+    req(input$SimAway)
+    team_name <- gsub("[^A-Za-z0-9 ]", "", input$SimAway)
+    logo_file <- paste0("Logos/", team_name, "/logo.png")
+    if(file.exists(file.path("www", logo_file))) {
+      tags$img(
+        src = logo_file,
+        height="50%",
+        width="50%")
     }
     else{
-      img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
+      tags$img(
+        src="Logos/NCAA/logo.png",
+        height="50%",
+        width="50%"
+      )
     }
   })
   
   output$imgHome <- renderUI({
-    if (input$Home %in% Logos$TEAM){
-      TeamLogoHome <- subset(Logos, input$Home == Logos$TEAM)
-      img(src = TeamLogoHome$LOGO, height="50%", width="50%") 
+    req(input$Home)
+    team_name <- gsub("[^A-Za-z0-9 ]", "", input$Home)
+    logo_file <- paste0("Logos/", team_name, "/logo.png")
+    if(file.exists(file.path("www", logo_file))) {
+      tags$img(
+        src = logo_file,
+        height="50%",
+        width="50%")
     }
     else{
-      img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
+      tags$img(
+        src="Logos/NCAA/logo.png",
+        height="50%",
+        width="50%"
+      )
     }
   })
   
   output$SimimgHome <- renderUI({
-    if (input$SimHome %in% Logos$TEAM){
-      TeamLogoSimHome <- subset(Logos, input$SimHome == Logos$TEAM)
-      img(src = TeamLogoSimHome$LOGO, height="50%", width="50%") 
+    req(input$SimHome)
+    team_name <- gsub("[^A-Za-z0-9 ]", "", input$SimHome)
+    logo_file <- paste0("Logos/", team_name, "/logo.png")
+    if(file.exists(file.path("www", logo_file))) {
+      tags$img(
+        src = logo_file,
+        height="50%",
+        width="50%")
     }
     else{
-      img(src = "https://cdn.freebiesupply.com/logos/large/2x/ncaa-basketball-logo-png-transparent.png", height="50%", width="50%", align="center")
+      tags$img(
+        src="Logos/NCAA/logo.png",
+        height="50%",
+        width="50%"
+      )
     }
   })
   
