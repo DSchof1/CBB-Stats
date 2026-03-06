@@ -63,12 +63,15 @@ schedule_builder <- function(game_date){
     day_schedule$`Neutral Site` <- as.logical(day_schedule$`Neutral Site`)
     
     day_schedule$Date <- ymd_hm(day_schedule$Date)
+    day_schedule$Date <- with_tz(day_schedule$Date,tzone="America/Toronto")
     
     day_schedule$`Away Score` <- as.numeric(day_schedule$`Away Score`)
     day_schedule$`Home Score` <- as.numeric(day_schedule$`Home Score`)
     
     #Reset index since non-D1 games are removed
     row.names(day_schedule) <- NULL
+    
+    day_schedule <- day_schedule[order(day_schedule$Date),]
     
     return(day_schedule)
   }
