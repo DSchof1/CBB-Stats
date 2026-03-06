@@ -41,7 +41,7 @@ expected_values <- function(day_schedule){
       EHomeScore <- GameScoreAtHomeTeam(home_team, away_team, NCAA)
     }
     
-    if(as.Date(with_tz(Sys.time(),tzone = "EST")) > paste0((champ_year-1),"-12-15")){
+    if(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto") > paste0((champ_year-1),"-12-15")){
       EHomePoss <- (as.numeric(home_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/home_team$ADJ_T
       EAwayPoss <- (as.numeric(away_team$`FGA/G`)*(ExpTempo(home_team, away_team, NCAA)))/away_team$ADJ_T
       EHomeEFG <- ((home_team$EFG_O/NCAA$EFG_O)*(away_team$EFG_D/NCAA$EFG_D)*home_team$EFG_O)/100
