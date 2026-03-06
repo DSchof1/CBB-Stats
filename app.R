@@ -205,11 +205,12 @@ server <- function(input, output) {
              text = paste0("<h4>It Is March.</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>Logos were fixed to no longer pull from elsewhere.  Fixes issue where logos weren't loading for simulation. </li>
+                <li>Logos were fixed to no longer pull from elsewhere.  Fixes issue where logos weren't loading for simulation</li>
               </ul>
               <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
-                <li>Data pull overhaul.  Loading times need to be a lot faster.  </li>
+                <li>Data pull overhaul.  Loading times need to be a lot faster</li>
+                <li>Full bracket simulation</li>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
                 <li>Stats for previously played games</li>
                 <li>Dark Mode?</li>
