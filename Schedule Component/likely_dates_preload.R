@@ -16,11 +16,11 @@ if(offseason == TRUE & preseason == FALSE){
   day3 <- as.character(as.Date(first_day_of_games)+3)
   day4 <- as.character(as.Date(first_day_of_games)+4)
 } else{
-  day0 <- as.character(as.Date(with_tz(Sys.time(),tzone = "EST")))
-  day1 <- as.character(as.Date(with_tz(Sys.time(),tzone = "EST"))+1)
-  day2 <- as.character(as.Date(with_tz(Sys.time(),tzone = "EST"))+2)
-  day3 <- as.character(as.Date(with_tz(Sys.time(),tzone = "EST"))+3)
-  day4 <- as.character(as.Date(with_tz(Sys.time(),tzone = "EST"))+4)
+  day0 <- as.character(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto"))
+  day1 <- as.character(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto")+1)
+  day2 <- as.character(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto")+2)
+  day3 <- as.character(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto")+3)
+  day4 <- as.character(as.Date(with_tz(Sys.time(),tzone = "America/Toronto"), tz = "America/Toronto")+4)
 }
 
 day0_data <- expected_values(schedule_builder(day0))
