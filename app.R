@@ -199,18 +199,17 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of October 16th 2025!",
+  shinyalert(title = "Updates as of March 2026!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>A New Season Begins</h4>
+             text = paste0("<h4>It Is March.</h4>
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>Preseason data is now workable, the app should be fully functional from the very start of the season</li>
-                <li>New season data will start displaying Oct. 20th</li>
-                <li>Addition of new D1 team New Haven, no new logos for anyone</li>
+                <li>Logos were fixed to no longer pull from elsewhere.  Fixes issue where logos weren't loading for simulation. </li>
               </ul>
               <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
+                <li>Data pull overhaul.  Loading times need to be a lot faster.  </li>
                 <li>Some small corrections to the distributions in the simulation charts, they should be discrete, not continuous</li>
                 <li>Stats for previously played games</li>
                 <li>Dark Mode?</li>
