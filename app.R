@@ -199,13 +199,14 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
-  shinyalert(title = "Updates as of March 2026!",
+  shinyalert(title = "Preseason 2027!",
              closeOnClickOutside = TRUE,
              html = TRUE,
-             text = paste0("<h4>It Is March.</h4>
+             text = paste0("
              <h4>What’s New</h4><br>
               <ul style='text-align:left;'>
-                <li>Logos were fixed to no longer pull from elsewhere.  Fixes issue where logos weren't loading for simulation</li>
+              <li/>Welcome West Florida to D1!</li>
+              <li/>Logos were all updated to the current primary logos</li>
               </ul>
               <h4>What's Coming (maybe eventually)</h4>
               <ul style='text-align:left;'>
