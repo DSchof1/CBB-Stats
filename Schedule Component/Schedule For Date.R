@@ -1,4 +1,5 @@
 library(jsonlite)
+library(httr2)
 library(readxl)
 library(lubridate)
 
@@ -11,19 +12,36 @@ schedule_builder <- function(game_date){
   formatted_date <- gsub("-", "", as.character(game_date))
   day_schedule <- data.frame()
   
-  if(inherits(try(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366")),
-                  silent = TRUE), "try-error") | 
-     is.null(fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366"))$events$competitions)){
-    day_schedule <- data.frame(X1=double(), X2=logical(), X3=character(), X4=character(),
-                               X5=character(), X6=character(), X7=numeric(),
-                               X8=numeric(), X9=character())
-    names(day_schedule) <- c("Date","Neutral Site","Away","Home","Away Logo","Home Logo","Away Score",
-                             "Home Score","Game Status")
-    return(day_schedule)
-  }
-  else{
-    api_call <- fromJSON(paste0("https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",formatted_date,"&groups=50&limit=366"))
+  url <- paste0(
+    "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=",
+    formatted_date,
+    "&groups=50&limit=366"
+  )
+  
+  # Retrieve the JSON using the working HTTP request method
+  api_call <- tryCatch({
+    response <- request(url) |>
+      req_user_agent("curl/8.0") |>
+      req_perform()
     
+    fromJSON(resp_body_string(response))
+  }, error = function(e) NULL)
+  
+  if (is.null(api_call) || is.null(api_call$events$competitions)) {
+    day_schedule <- data.frame(
+      X1 = double(), X2 = logical(), X3 = character(),
+      X4 = character(), X5 = character(), X6 = character(),
+      X7 = numeric(), X8 = numeric(), X9 = character()
+    )
+    
+    names(day_schedule) <- c(
+      "Date", "Neutral Site", "Away", "Home",
+      "Away Logo", "Home Logo", "Away Score",
+      "Home Score", "Game Status"
+    )
+    
+    return(day_schedule)
+  } else {    
     #Deal with TBDs
     tbd_list <- api_call[["events"]][["name"]]
     api_call <- api_call$events$competitions[match(tbd_list[!grepl("TBD", tbd_list)], tbd_list)]
